@@ -33,7 +33,7 @@
       </layout>
     </appender>
     <appender name="LogFileAppender" type="log4net.Appender.RollingFileAppender">
-      <param name="File" value="C:\home-assistant\DiscordBotService.log" />
+      <param name="File" value="C:\Kalavala\HassBot\Output\DiscordBotService.log" />
       <lockingModel type="log4net.Appender.FileAppender+MinimalLock" />
       <appendToFile value="true" />
       <rollingStyle value="Size" />
@@ -52,20 +52,28 @@
   </log4net>  
   <appSettings>
     <add key="maxLinesLimit" value="15" />
-    <add key="token" value="abcdefghijklmnopqrstuvwxyz.abcdef.abcdefghijklmnopqrstuvwxyz" />
+    <add key="token" value="" />
     <add key="sitemapUrl" value="https://home-assistant.io/sitemap.xml" />
-    <add key="hassbotCommandUrl" value="https://raw.githubusercontent.com/awesome-automations/hassbot-data/master/commands.json" />
-    <add key="hassbotCommandPath" value="C:\kalavala\HassBot\Output\commands.json" />
-    <add key="sitemapPath" value="C:\home-assistant\sitemap.xml" />
-    <add key="afkUsersFile" value="C:\home-assistant\away.json" />
+    
+    <add key="CommandsUrl" value="https://raw.githubusercontent.com/awesome-automations/hassbot-data/master/commands.json" />
+    <add key="CommandsLocalPath" value="C:\Kalavala\HassBot\Output\commands.json" />
+    <add key="BlockedDomainsUrl" value="https://raw.githubusercontent.com/awesome-automations/hassbot-data/master/blocked_domains.json" />
+    <add key="BlockedDomainsLocalPath" value="C:\Kalavala\HassBot\Output\blocked_domains.json" />
+
+    <add key="sitemapPath" value="C:\Kalavala\HassBot\Output\sitemap.xml" />
+    <add key="afkUsersFile" value="C:\Kalavala\HassBot\Output\away.json" />
+    <add key="subscriptionsFile" value="C:\Kalavala\HassBot\Output\subscriptions.json" />
+    <add key="violationsFile" value="C:\Kalavala\HassBot\Output\violations.json" />
+    
     <add key="deleteHoundBotMsgs" value="true" />
-    <add key="serverGuild" value="330944238910963714" />
+    
     <add key="discordServerName" value="Home Assistant" />
-    <add key="mods" value="skalavala, Tinkerer, Vasiley, dale3h, quadflight, zombu2, Ludeeus" />
-    <add key="botspamChannel" value="&lt;#412217573904744448&gt;" />
-    <add key="maxLineLimitMessage" value="Attention!: Please use https://www.hastebin.com to share code that is more than 10-15 lines. You have been warned, {0}!&#xD;&#xA;Please read rule #6 here &lt;#331130181102206976&gt;" />
-    <add key="welcomerulesChannel" value="&lt;#331130181102206976&gt;" />
-    <add key="channel_general" value="400033312929742879"/>
-    <add key="channel_projects" value="411972631680647189"/>
+    <add key="mods" value="skalavala, arsaboo, Tinkerer, Vasiley, dale3h, baloob, infamy, quadflight, bachya, phnx, cogneato, iantrich, Ludeeus, hunterjm, Frenck" />
+
+    <add key="serverGuild" value="330944238910963714" />
+    <add key="modChannel" value="330948240805462026"/>
+    <add key="modlogChannel" value="473590680103419943"/>
+    <add key="botspamChannel" value="331106174722113548"/>
+    <add key="welcomerulesChannel" value="331130181102206976" />
   </appSettings>
 </configuration>
