@@ -87,7 +87,7 @@ namespace DiscordBotLib
             foreach (Embed e in message.Embeds)
             {
                 EmbedAuthor author = (EmbedAuthor)e.Author;
-                if (author.ToString() == "houndci-bot")
+                if (author.ToString() == "houndci-bot" || author.ToString() == "codecov")
                 {
                     //logger.InfoFormat("Deleting the houndci-bot message: {0} => {1}: {2}",
                     //                   e.Url, e.Title, e.Description);
