@@ -311,11 +311,9 @@ namespace DiscordBotLib
             Helper LocalHelper = new Helper();
             if (string.Empty != response)
             {
-                logger.Debug(mentionedUsers);
                 await LocalHelper.CreateEmbed(
                     context, null, null,
                     string.Format("{0} {1}", mentionedUsers, response));
-                logger.Debug("got here");
             }
             else
             {
@@ -326,11 +324,9 @@ namespace DiscordBotLib
                 string lookupResult = Sitemap.Lookup(command);
                 if (string.Empty != lookupResult)
                 {
-                    logger.Debug("got here");
                     await LocalHelper.CreateEmbed(
                         context, null, null,
                         string.Format("{0} {1}", mentionedUsers, lookupResult));
-                    logger.Debug("got here");
                 }
             }
         }
