@@ -50,7 +50,8 @@ namespace DiscordBotLib
             if (string.Empty != mentionedUsers)
                 embed.AddInlineField("FYI", mentionedUsers);
 
-            await DeleteMessage();
+            Helper LocalHelper = new Helper();
+            await LocalHelper.DeleteMessage(Context);
             await ReplyAsync(string.Empty, false, embed);
         }
 

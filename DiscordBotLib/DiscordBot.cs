@@ -179,7 +179,7 @@ namespace DiscordBotLib
             string command = key.Split(' ')[0];
 
             // handle custom command
-            await HandleCustomCommand(command, message, mentionedUsers, result);
+            await HandleCustomCommand(command, message, context, mentionedUsers, result);
         }
 
         private static async Task HandleLineCount(SocketUserMessage message, SocketCommandContext context)
@@ -305,12 +305,15 @@ namespace DiscordBotLib
                 return false;
         }
 
-        private static async Task HandleCustomCommand(string command, SocketUserMessage message, string mentionedUsers, IResult result)
+        private static async Task HandleCustomCommand(string command, SocketUserMessage message, SocketCommandContext context, string mentionedUsers, IResult result)
         {
             string response = HassBotCommands.Instance.Lookup(command);
+            Helper LocalHelper = new Helper();
             if (string.Empty != response)
             {
-                await message.Channel.SendMessageAsync(mentionedUsers + response);
+                await LocalHelper.CreateEmbed(
+                    context, null, null,
+                    string.Format("{0} {1}", mentionedUsers, response));
             }
             else
             {
@@ -321,7 +324,9 @@ namespace DiscordBotLib
                 string lookupResult = Sitemap.Lookup(command);
                 if (string.Empty != lookupResult)
                 {
-                    await message.Channel.SendMessageAsync(mentionedUsers + lookupResult);
+                    await LocalHelper.CreateEmbed(
+                        context, null, null,
+                        string.Format("{0} {1}", mentionedUsers, lookupResult));
                 }
             }
         }

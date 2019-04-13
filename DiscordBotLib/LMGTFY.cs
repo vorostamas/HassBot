@@ -42,9 +42,12 @@ namespace DiscordBotLib
             message.Append($"<http://lmgtfy.com/?q={encoded}>");
 
 
-            await base.CreateEmbed(Constants.EMOJI_POINT_UP, // Emoji to title
-                                   Constants.LET_ME_GOOGLE, // Title
-                                   message.ToString()); // Content of the message
+            Helper LocalHelper = new Helper();
+            await LocalHelper.CreateEmbed(
+                Context,
+                Constants.EMOJI_POINT_UP, // Emoji to title
+                Constants.LET_ME_GOOGLE, // Title
+                message.ToString()); // Content of the message
         }
     }
 }

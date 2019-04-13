@@ -242,7 +242,7 @@ namespace DiscordBotLib
         public static async Task VerifyUrls(string content, SocketCommandContext context)
         {
             Regex re = new Regex(@"((http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?)");
-            
+
         }
 
         public static async Task CheckBlockedDomains(string content, SocketCommandContext context)
@@ -252,7 +252,7 @@ namespace DiscordBotLib
             {
                 if (content.Contains(domain.Url))
                 {
-                    if (domain.Ban == true )
+                    if (domain.Ban == true)
                     {
                         // exclude Mods from the bans
                         if (IsMod(context.User))
@@ -263,7 +263,7 @@ namespace DiscordBotLib
                         await context.Guild.AddBanAsync(context.User, 1, reason, null);
 
                         // post a message in the channel about the permanent ban
-                        await context.Message.Channel.SendMessageAsync("BAM!!! " + reason );
+                        await context.Message.Channel.SendMessageAsync("BAM!!! " + reason);
 
                         // send a message to #botspam channel as well
                         string detailedMessage = "Woohoo! " + reason + " Posted message: " + content;
@@ -418,6 +418,59 @@ namespace DiscordBotLib
                 return false;
             }
             return true;
+        }
+
+        public async Task DeleteMessage(SocketCommandContext context)
+        {
+            logger.Debug("Deleting command message " +
+                context.Message + " from " + context.User.Username + " in " + context.Channel.Name);
+            await context.Message.DeleteAsync();
+        }
+
+        public async Task<string> CreateEmbed(
+            SocketCommandContext context,
+            string emoji = null,
+            string title = null,
+            string content = null,
+            bool removeoriginalmessage = true)
+        {
+
+            var embed = new EmbedBuilder();
+
+            // Add a random color to the embedded post
+            embed.WithColor(Helper.GetRandomColor());
+
+            // Add Title
+            // Add emoji if any
+            if (emoji != null || emoji != String.Empty)
+            {
+                embed.WithTitle(emoji + " " + title);
+            }
+            else
+            {
+                embed.WithTitle(title);
+            }
+
+            // Add content
+            embed.WithDescription(content);
+
+            // Footer
+            // Add invoker
+            embed.WithFooter(footer => footer.Text = string.Format(
+                Constants.INVOKED_BY, context.User.Username));
+
+            // Add timestamp
+            embed.WithCurrentTimestamp();
+
+            // Remove original if needed
+            if (removeoriginalmessage)
+            {
+                await DeleteMessage(context);
+            }
+
+            // Send message
+            await context.Channel.SendMessageAsync(string.Empty, false, embed);
+            return null;
         }
     }
 }
