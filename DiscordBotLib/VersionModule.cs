@@ -58,6 +58,9 @@ namespace DiscordBotLib
                 // embed.AddInlineField("As of", DateTime.Now.ToShortDateString());
                 embed.AddInlineField("Stable", ha.Stable);
                 embed.AddInlineField("Beta", ha.Beta);
+                embed.WithCurrentTimestamp();
+                embed.WithFooter(footer => footer.Text = string.Format(
+                    Constants.INVOKED_BY, Context.User.Username));
             }
 
             // mention users if any
@@ -65,6 +68,8 @@ namespace DiscordBotLib
             if (string.Empty != mentionedUsers)
                 embed.AddInlineField("FYI", mentionedUsers);
 
+            Helper LocalHelper = new Helper();
+            await LocalHelper.DeleteMessage(Context, true);
             await ReplyAsync(string.Empty, false, embed);
         }
 
@@ -75,6 +80,9 @@ namespace DiscordBotLib
             var embed = new EmbedBuilder();
             embed.WithTitle("Here are the current HASSIO software versions.\n");
             embed.WithColor(Helper.GetRandomColor());
+            embed.WithCurrentTimestamp();
+            embed.WithFooter(footer => footer.Text = string.Format(
+                    Constants.INVOKED_BY, Context.User.Username));
 
             if (null != stable) {
                 embed.AddInlineField("Stable", stable.HassOS);
@@ -93,6 +101,8 @@ namespace DiscordBotLib
             if (string.Empty != mentionedUsers)
                 embed.AddInlineField("FYI", mentionedUsers);
 
+            Helper LocalHelper = new Helper();
+            await LocalHelper.DeleteMessage(Context, true);
             await ReplyAsync(string.Empty, false, embed);
         }
 
