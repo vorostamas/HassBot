@@ -47,7 +47,8 @@ namespace DiscordBotLib
                 Context,
                 Constants.EMOJI_POINT_UP, // Emoji to title
                 Constants.LET_ME_GOOGLE, // Title
-                message.ToString()); // Content of the message
+                message.ToString(), // Content of the message
+                true); // Force delete the message
         }
     }
 }

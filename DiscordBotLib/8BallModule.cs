@@ -66,7 +66,8 @@ namespace DiscordBotLib
                 Context,
                 ":8ball:",
                 "8Ball prdiction:",
-                content.ToString());
+                content.ToString(),
+                true);
         }
     }
 }
