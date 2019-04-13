@@ -8,6 +8,7 @@ using Discord;
 using Discord.Commands;
 using System;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace DiscordBotLib
@@ -38,10 +39,9 @@ namespace DiscordBotLib
                 "No","No Doubt About It","Positively","Prospect Good","So It Shall Be","The Stars Say No",
                 "Unlikely","Very Likely","Yes","You Can Count On It" };
 
-            var embed = new EmbedBuilder();
-            embed.WithTitle(":8ball:");
-            embed.WithColor(Helper.GetRandomColor());
+            // Initialize strings
             string prediction = string.Empty;
+            string title = string.Empty;
 
             // additional logic, so that the 8Ball prediction doesn't repeat
             while (true) {
@@ -51,16 +51,20 @@ namespace DiscordBotLib
                     break;
             }
 
-            // mention users if any
-            string mentionedUsers = base.MentionedUsers();
-
             // update previous prediction
             previousPrediction = prediction;
-            if ( string.Empty == mentionedUsers)
-                embed.AddField("8Ball Prediction:", prediction);
-            else
-                embed.AddField("8Ball Prediction:", mentionedUsers + prediction);
-            await ReplyAsync(string.Empty, false, embed);
+
+            // question && answer
+            StringBuilder content = new StringBuilder();
+
+            content.Append($"Question: _{Context.Message.Content.Replace(".8ball ", null)}_");
+            content.Append("\n"); // New line
+            content.Append($"Answer: **{prediction}**");
+
+            await CreateEmbed(
+                ":8ball:",
+                "8Ball prdiction:",
+                content.ToString());
         }
     }
 }
