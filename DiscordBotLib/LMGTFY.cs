@@ -4,8 +4,8 @@
 //  FILE            : HassBot.cs
 //  DESCRIPTION     : A class that implements ~lmgtfy command
 ///////////////////////////////////////////////////////////////////////////////
-using Discord;
 using Discord.Commands;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -21,9 +21,6 @@ namespace DiscordBotLib
 
         [Command("lmgtfy")]
         public async Task LetMeGoogleThatForYouAsync([Remainder]string cmd) {
-            var embed = new EmbedBuilder();
-            embed.WithTitle(Constants.EMOJI_POINT_UP);
-            embed.WithColor(Helper.GetRandomColor());
 
             // mention users if any
             string mentionedUsers = base.MentionedUsers();
@@ -34,11 +31,20 @@ namespace DiscordBotLib
                         cmd = cmd.Replace(userHandle.Trim(), string.Empty);
                     }
             }
+            StringBuilder message = new StringBuilder();
 
+            // Make sure the generated URL is correct.
             string encoded = HttpUtility.UrlEncode(cmd.Trim());
-            embed.AddInlineField(Constants.LET_ME_GOOGLE,
-                string.Format("Here, try this {0} => <http://lmgtfy.com/?q={1}>", mentionedUsers, encoded));
-            await ReplyAsync(string.Empty, false, embed);
+
+            // Create the message
+            message.Append($"Here {mentionedUsers}, try this:");
+            message.Append("\n"); // New line
+            message.Append($"<http://lmgtfy.com/?q={encoded}>");
+
+
+            await base.CreateEmbed(Constants.EMOJI_POINT_UP, // Emoji to title
+                                   Constants.LET_ME_GOOGLE, // Title
+                                   message.ToString()); // Content of the message
         }
     }
 }

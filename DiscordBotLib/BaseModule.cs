@@ -1,11 +1,7 @@
 ﻿using Discord;
 using Discord.Commands;
-using Discord.WebSocket;
-using HassBotUtils;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace DiscordBotLib
@@ -37,10 +33,59 @@ namespace DiscordBotLib
 
         protected async Task DisplayUsage(string usageString)
         {
+            await CreateEmbed(
+                Constants.EMOJI_INFORMATION,
+                Constants.USAGE_TITLE,
+                usageString
+                );
+        }
+
+        private static readonly log4net.ILog logger =
+             log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        public async Task DeleteMessage()
+        {
+            logger.Debug("Deleting command message " +
+                Context.Message + " from " + Context.User.Username + " in " + Context.Channel.Name);
+            await Context.Message.DeleteAsync();
+        }
+
+        public async Task CreateEmbed(
+            string emoji = null,
+            string title = null,
+            string content = null,
+            bool removeoriginalmessage = true)
+        {
+            if (removeoriginalmessage)
+            {
+                await DeleteMessage();
+            }
             var embed = new EmbedBuilder();
-            embed.WithTitle(Constants.EMOJI_INFORMATION);
-            embed.WithColor(Color.DarkRed);
-            embed.AddInlineField(Constants.USAGE_TITLE, usageString);
+
+            // Add a random color to the embedded post
+            embed.WithColor(Helper.GetRandomColor());
+
+            // Add Title
+            // Add emoji if any
+            if (emoji != null || emoji != String.Empty)
+            {
+                embed.WithTitle(emoji + " " + title);
+            }
+            else
+            {
+                embed.WithTitle(title);
+            }
+
+            // Add content
+            embed.WithDescription(content);
+
+            // Footer
+            // Add invoker
+            embed.WithFooter(footer => footer.Text = string.Format(
+                Constants.INVOKED_BY, Context.User.Username));
+
+            // Add timestamp
+            embed.WithCurrentTimestamp();
+
             await ReplyAsync(string.Empty, false, embed);
         }
     }
