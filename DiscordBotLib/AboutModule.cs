@@ -41,12 +41,16 @@ namespace DiscordBotLib
             embed.AddInlineField("Discord Lib Version", $"{ GetLibrary() }");
             embed.AddInlineField("Latency", $" { GetLatency() }");
             embed.AddField("GitHub", "You can find the source code here https://github.com/skalavala/HassBot");
+            embed.WithFooter(footer => footer.Text = string.Format(
+                Constants.INVOKED_BY, Context.User.Username));
+            embed.WithCurrentTimestamp();
 
             // mention users if any
             string mentionedUsers = base.MentionedUsers();
             if (string.Empty != mentionedUsers)
-                embed.AddInlineField("FYI", mentionedUsers);            
+                embed.AddInlineField("FYI", mentionedUsers);
 
+            await DeleteMessage();
             await ReplyAsync(string.Empty, false, embed);
         }
 

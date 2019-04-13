@@ -42,7 +42,7 @@ namespace DiscordBotLib
 
         private static readonly log4net.ILog logger =
              log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        private async Task DeleteMessage()
+        public async Task DeleteMessage()
         {
             logger.Debug("Deleting command message " +
                 Context.Message + " from " + Context.User.Username + " in " + Context.Channel.Name);
