@@ -492,15 +492,10 @@ namespace DiscordBotLib
             embed.WithCurrentTimestamp();
 
             // Remove original if needed
-            logger.Debug("Deleting");
             await DeleteMessage(context, forceremoveoriginalmessage);
-            logger.Debug("Deleted");
 
             // Send message
-            logger.Debug("Sending");
             await context.Channel.SendMessageAsync(string.Empty, false, embed);
-            logger.Debug("Sendt");
-            //return null;
         }
     }
 }
