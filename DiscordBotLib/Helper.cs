@@ -420,19 +420,48 @@ namespace DiscordBotLib
             return true;
         }
 
-        public async Task DeleteMessage(SocketCommandContext context)
+        public async Task DeleteMessage(SocketCommandContext context, bool forceremoveoriginalmessage)
         {
-            logger.Debug("Deleting command message " +
-                context.Message + " from " + context.User.Username + " in " + context.Channel.Name);
-            await context.Message.DeleteAsync();
+            if (forceremoveoriginalmessage)
+            {
+                logger.Debug("Deleting command message " + context.Message + " from " + context.User.Username + " in " + context.Channel.Name);
+                await context.Message.DeleteAsync();
+            }
+            else
+            {
+                string leftovercontent = context.Message.Content.ToString();
+                string invokedcommand = leftovercontent.Split(' ')[0];
+                leftovercontent = leftovercontent.Replace(invokedcommand, "");
+                leftovercontent = leftovercontent.Replace(" ", "");
+
+                if (context.Message.MentionedUsers.ToString().Length != 0)
+                {
+                    foreach (var item in context.Message.MentionedUsers)
+                    {
+                        leftovercontent = leftovercontent.Replace($"<@{item.Id}>", "");
+                    }
+                }
+
+                if (leftovercontent.Length != 0)
+                {
+                    logger.Debug("Message had extra content, skipping delete.");
+                }
+                else
+                {
+                    logger.Debug("Deleting command message " +
+                        context.Message + " from " + context.User.Username + " in " + context.Channel.Name);
+                    await context.Message.DeleteAsync();
+                }
+            }
+
         }
 
-        public async Task<string> CreateEmbed(
+        public async Task CreateEmbed(
             SocketCommandContext context,
             string emoji = null,
             string title = null,
             string content = null,
-            bool removeoriginalmessage = true)
+            bool forceremoveoriginalmessage = false)
         {
 
             var embed = new EmbedBuilder();
@@ -463,14 +492,15 @@ namespace DiscordBotLib
             embed.WithCurrentTimestamp();
 
             // Remove original if needed
-            if (removeoriginalmessage)
-            {
-                await DeleteMessage(context);
-            }
+            logger.Debug("Deleting");
+            await DeleteMessage(context, forceremoveoriginalmessage);
+            logger.Debug("Deleted");
 
             // Send message
+            logger.Debug("Sending");
             await context.Channel.SendMessageAsync(string.Empty, false, embed);
-            return null;
+            logger.Debug("Sendt");
+            //return null;
         }
     }
 }
