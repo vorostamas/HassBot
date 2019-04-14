@@ -80,15 +80,15 @@ namespace DiscordBotLib
             var inline = new List<Tuple<string, string>>();
 
             if (null != stable) {
-                inline.Add(new Tuple<string, string>("Stable", stable.HassOS));
-                inline.Add(new Tuple<string, string>("Stable Supervisor", stable.Supervisor));
+                inline.Add(new Tuple<string, string>("Stable Supervisor", stable.HassOS));
+                inline.Add(new Tuple<string, string>("Stable HassOS", stable.Supervisor));
                 inline.Add(new Tuple<string, string>("Stable Home Assistant", stable.HomeAssistant));
             }
 
             if (null != beta) {
-                inline.Add(new Tuple<string, string>("Stable", beta.HassOS));
-                inline.Add(new Tuple<string, string>("Stable Supervisor", beta.Supervisor));
-                inline.Add(new Tuple<string, string>("Stable Home Assistant", beta.HomeAssistant));
+                inline.Add(new Tuple<string, string>("Beta Supervisor", beta.HassOS));
+                inline.Add(new Tuple<string, string>("Beta HassOS", beta.Supervisor));
+                inline.Add(new Tuple<string, string>("Beta Home Assistant", beta.HomeAssistant));
             }
 
             // mention users if any
@@ -140,7 +140,7 @@ namespace DiscordBotLib
                     }
                 }
                 foreach (dynamic item in entries) {
-                    if (item.prerelease == true && item.draft == false) {
+                    if (item.draft == false) {
                         ha.Beta = item.name;
                         break;
                     }
