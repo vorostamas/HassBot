@@ -308,10 +308,9 @@ namespace DiscordBotLib
         private static async Task HandleCustomCommand(string command, SocketUserMessage message, SocketCommandContext context, string mentionedUsers, IResult result)
         {
             string response = HassBotCommands.Instance.Lookup(command);
-            Helper LocalHelper = new Helper();
             if (string.Empty != response)
             {
-                await LocalHelper.CreateEmbed(
+                await Helper.CreateEmbed(
                     context, null, null,
                     string.Format("{0} {1}", mentionedUsers, response));
             }
@@ -324,7 +323,7 @@ namespace DiscordBotLib
                 string lookupResult = Sitemap.Lookup(command);
                 if (string.Empty != lookupResult)
                 {
-                    await LocalHelper.CreateEmbed(
+                    await Helper.CreateEmbed(
                         context, null, null,
                         string.Format("{0} {1}", mentionedUsers, lookupResult));
                 }

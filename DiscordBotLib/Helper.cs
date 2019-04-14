@@ -420,7 +420,7 @@ namespace DiscordBotLib
             return true;
         }
 
-        public async Task DeleteMessage(SocketCommandContext context, bool forceremoveoriginalmessage)
+        public static async Task DeleteMessage(SocketCommandContext context, bool forceremoveoriginalmessage)
         {
             if (forceremoveoriginalmessage)
             {
@@ -456,7 +456,7 @@ namespace DiscordBotLib
 
         }
 
-        public async Task CreateEmbed(
+        public static async Task CreateEmbed(
             SocketCommandContext context,
             string emoji = null,
             string title = null,

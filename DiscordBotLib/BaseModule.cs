@@ -33,8 +33,7 @@ namespace DiscordBotLib
 
         protected async Task DisplayUsage(string usageString)
         {
-            Helper LocalHelper = new Helper();
-            await LocalHelper.CreateEmbed(
+            await Helper.CreateEmbed(
                 Context,
                 Constants.EMOJI_INFORMATION,
                 Constants.USAGE_TITLE,

@@ -67,9 +67,7 @@ namespace DiscordBotLib
             string mentionedUsers = base.MentionedUsers();
             if (string.Empty != mentionedUsers)
                 embed.AddInlineField("FYI", mentionedUsers);
-
-            Helper LocalHelper = new Helper();
-            await LocalHelper.DeleteMessage(Context, true);
+            await Helper.DeleteMessage(Context, true);
             await ReplyAsync(string.Empty, false, embed);
         }
 
@@ -101,8 +99,7 @@ namespace DiscordBotLib
             if (string.Empty != mentionedUsers)
                 embed.AddInlineField("FYI", mentionedUsers);
 
-            Helper LocalHelper = new Helper();
-            await LocalHelper.DeleteMessage(Context, true);
+            await Helper.DeleteMessage(Context, true);
             await ReplyAsync(string.Empty, false, embed);
         }
 

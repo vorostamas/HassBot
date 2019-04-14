@@ -15,7 +15,6 @@ namespace DiscordBotLib
 
         [Command("ping"), Alias("pong")]
         public async Task PingAsync() {
-            Helper LocalHelper = new Helper();
             string response = string.Empty;
             string request = Context.Message.Content.ToLower();
             request = request.Replace("~", string.Empty).Replace(".", string.Empty);
@@ -27,7 +26,7 @@ namespace DiscordBotLib
             if (string.Empty == response)
                 return;
 
-            await LocalHelper.CreateEmbed(
+            await Helper.CreateEmbed(
                 Context,
                 Constants.EMOJI_PING_PONG, // Emoji to title
                 request + "?", // Title

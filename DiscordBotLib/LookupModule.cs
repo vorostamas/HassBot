@@ -35,7 +35,6 @@ namespace DiscordBotLib
         }
 
         private async Task LookupCommand(string input) {
-            Helper LocalHelper = new Helper();
 
             string emoji = String.Empty;
             string title = String.Empty;
@@ -58,7 +57,7 @@ namespace DiscordBotLib
                 title = "Here is what I found:";
                 msg = result;
             }
-            await LocalHelper.CreateEmbed(Context, emoji, title, msg, true);
+            await Helper.CreateEmbed(Context, emoji, title, msg, true);
         }
 
         [Command("deepsearch")]

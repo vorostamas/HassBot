@@ -42,8 +42,7 @@ namespace DiscordBotLib
             message.Append($"<http://lmgtfy.com/?q={encoded}>");
 
 
-            Helper LocalHelper = new Helper();
-            await LocalHelper.CreateEmbed(
+            await Helper.CreateEmbed(
                 Context,
                 Constants.EMOJI_POINT_UP, // Emoji to title
                 Constants.LET_ME_GOOGLE, // Title

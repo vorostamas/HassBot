@@ -61,8 +61,7 @@ namespace DiscordBotLib
             content.Append("\n"); // New line
             content.Append($"Answer: **{prediction}**");
 
-            Helper LocalHelper = new Helper();
-            await LocalHelper.CreateEmbed(
+            await Helper.CreateEmbed(
                 Context,
                 ":8ball:",
                 "8Ball prdiction:",
