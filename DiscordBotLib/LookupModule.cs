@@ -57,7 +57,7 @@ namespace DiscordBotLib
                 title = "Here is what I found:";
                 msg = result;
             }
-            await Helper.CreateEmbed(Context, emoji, title, msg, true);
+            await Helper.CreateEmbed(Context, emoji, title, msg, null, true);
         }
 
         [Command("deepsearch")]

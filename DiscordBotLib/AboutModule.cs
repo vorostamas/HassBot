@@ -10,6 +10,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using Discord;
+using System.Collections.Generic;
 
 namespace DiscordBotLib
 {
@@ -31,27 +32,25 @@ namespace DiscordBotLib
         }
 
         private async Task AboutCommand() {
-            var embed = new EmbedBuilder();
-            embed.WithTitle("Hello! This is @HassBot, written by @skalavala \n");
-            embed.WithColor(Helper.GetRandomColor());
-            embed.AddInlineField("Up Since", $"{ GetUptime() }");
-            embed.AddInlineField("Total Users", $"{Context.Client.Guilds.Sum(g => g.Users.Count)}");
-            embed.AddInlineField("Heap Size", $"{GetHeapSize()} MiB");
-            embed.AddInlineField("Memory", $"{ GetMemoryUsage() }");
-            embed.AddInlineField("Discord Lib Version", $"{ GetLibrary() }");
-            embed.AddInlineField("Latency", $" { GetLatency() }");
-            embed.AddField("GitHub", "You can find the source code here https://github.com/skalavala/HassBot");
-            embed.WithFooter(footer => footer.Text = string.Format(
-                Constants.INVOKED_BY, Context.User.Username));
-            embed.WithCurrentTimestamp();
+            var inline = new List<Tuple<string, string>>();
+            string emoji = ":wave:";
+            string title = "Hello! This is @HassBot, written by @skalavala";
+            string body = "You can find the source code here https://github.com/skalavala/HassBot";
+
+            inline.Add(new Tuple<string, string>("Up Since", $"{ GetUptime() }"));
+            inline.Add(new Tuple<string, string>("Total Users", $"{Context.Client.Guilds.Sum(g => g.Users.Count)}"));
+            inline.Add(new Tuple<string, string>("Heap Size", $"{GetHeapSize()} MiB"));
+            inline.Add(new Tuple<string, string>("Memory", $"{ GetMemoryUsage() }"));
+            inline.Add(new Tuple<string, string>("Discord Lib Version", $"{ GetLibrary() }"));
+            inline.Add(new Tuple<string, string>("Latency", $" { GetLatency() }"));
 
             // mention users if any
             string mentionedUsers = base.MentionedUsers();
             if (string.Empty != mentionedUsers)
-                embed.AddInlineField("FYI", mentionedUsers);
+                body = string.Format("FYI {0} \n", mentionedUsers) + body;
 
-            await Helper.DeleteMessage(Context, true);
-            await ReplyAsync(string.Empty, false, embed);
+            // Send response
+            await Helper.CreateEmbed(Context, emoji, title, body, inline, true);
         }
 
         public string GetUptime() {

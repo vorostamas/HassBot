@@ -22,6 +22,10 @@ namespace DiscordBotLib
         [Command("lmgtfy")]
         public async Task LetMeGoogleThatForYouAsync([Remainder]string cmd) {
 
+            string emoji = Constants.EMOJI_POINT_UP;
+            string title = Constants.LET_ME_GOOGLE;
+            string body = null;
+
             // mention users if any
             string mentionedUsers = base.MentionedUsers();
             if (string.Empty != mentionedUsers) {
@@ -31,23 +35,17 @@ namespace DiscordBotLib
                         cmd = cmd.Replace(userHandle.Trim(), string.Empty);
                     }
             }
-            StringBuilder message = new StringBuilder();
-
+            
             // Make sure the generated URL is correct.
             string encoded = HttpUtility.UrlEncode(cmd.Trim());
 
             // Create the message
-            message.Append($"Here {mentionedUsers}, try this:");
-            message.Append("\n"); // New line
-            message.Append($"<http://lmgtfy.com/?q={encoded}>");
+            body = $"Here {mentionedUsers}, try this:";
+            body += "\n"; // New line
+            body += $"<http://lmgtfy.com/?q={encoded}>";
 
-
-            await Helper.CreateEmbed(
-                Context,
-                Constants.EMOJI_POINT_UP, // Emoji to title
-                Constants.LET_ME_GOOGLE, // Title
-                message.ToString(), // Content of the message
-                true); // Force delete the message
+            // Send response
+            await Helper.CreateEmbed(Context, emoji, title, body, null, true);
         }
     }
 }

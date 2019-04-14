@@ -41,7 +41,9 @@ namespace DiscordBotLib
 
             // Initialize strings
             string prediction = string.Empty;
-            string title = string.Empty;
+            string emoji = ":8ball:";
+            string title = "8Ball prdiction:";
+            string body = null;
 
             // additional logic, so that the 8Ball prediction doesn't repeat
             while (true) {
@@ -55,18 +57,12 @@ namespace DiscordBotLib
             previousPrediction = prediction;
 
             // question && answer
-            StringBuilder content = new StringBuilder();
+            body = $"Question: _{Context.Message.Content.Replace(".8ball ", null)}_";
+            body += "\n"; // New line
+            body += $"Answer: **{prediction}**";
 
-            content.Append($"Question: _{Context.Message.Content.Replace(".8ball ", null)}_");
-            content.Append("\n"); // New line
-            content.Append($"Answer: **{prediction}**");
-
-            await Helper.CreateEmbed(
-                Context,
-                ":8ball:",
-                "8Ball prdiction:",
-                content.ToString(),
-                true);
+            // Send response
+            await Helper.CreateEmbed(Context, emoji, title, body, null, true);
         }
     }
 }

@@ -461,6 +461,7 @@ namespace DiscordBotLib
             string emoji = null,
             string title = null,
             string content = null,
+            List<Tuple<string, string>> inline = null,
             bool forceremoveoriginalmessage = false)
         {
 
@@ -482,6 +483,13 @@ namespace DiscordBotLib
 
             // Add content
             embed.WithDescription(content);
+            if (inline != null)
+            {
+                foreach (Tuple<string, string> inlineitem in inline)
+                {
+                    embed.AddInlineField(inlineitem.Item1, inlineitem.Item2);
+                }
+            }
 
             // Footer
             // Add invoker
