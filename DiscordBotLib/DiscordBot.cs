@@ -211,7 +211,7 @@ namespace DiscordBotLib
 
                 // publish the URL link
                 string response = string.Format(HASTEBIN_MESSAGE, context.User.Mention, url);
-                await message.Channel.SendMessageAsync(response);
+                await Helper.CreateEmbed(context, null, null, response);
 
                 //// Violation Management
                 //ViolationsManager.TheViolationsManager.AddIncident(context.User.Id, context.User.Username, CommonViolationTypes.Codewall.ToString(), context.Channel.Name);                
