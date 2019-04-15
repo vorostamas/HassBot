@@ -413,6 +413,11 @@ namespace DiscordBotLib
             return true;
         }
 
+        /// <summary>
+        ///     Deletes the message that triggered the bot, if the message did not contain any extra words.
+        /// </summary>
+        /// <param name="context">The context of the message that triggered the bot to react.</param>
+        /// <param name="forceremoveoriginalmessage">Flag to indicate that the command post allways should be deleted, if false the logic in this method aplies.</param>
         public static async Task DeleteMessage(SocketCommandContext context, bool forceremoveoriginalmessage)
         {
             if (forceremoveoriginalmessage)
@@ -449,13 +454,16 @@ namespace DiscordBotLib
 
         }
 
-        public static async Task CreateEmbed(
-            SocketCommandContext context, // The context of the message that triggered the bot to react.
-            string emoji = null, // Emoji for the embedded post, this is inserted before the title.
-            string title = null, // Title for the embedded post
-            string content = null, // Content(body) for the embedded post
-            List<Tuple<string, string>> inline = null, // Special inline items of the embedded post.
-            bool forceremoveoriginalmessage = false) // Flag to indicate that the command post allways should be deleted, if false the logic in the DeleteMessage function aplies.
+        /// <summary>
+        ///     Post a nice looking embeded post in as a response from the bot.
+        /// </summary>
+        /// <param name="context">The context of the message that triggered the bot to react.</param>
+        /// <param name="emoji">Emoji for the embedded post, this is inserted before the title. (Default: null)</param>
+        /// <param name="title">Title for the embedded post. (Default: null)</param>
+        /// <param name="content">Content(body) for the embedded post. (Default: null)</param>
+        /// <param name="inline">Special inline items of the embedded post. (Default: null)</param>
+        /// <param name="forceremoveoriginalmessage">Flag to indicate that the command post allways should be deleted, if false the logic in the DeleteMessage method aplies. (Default: false)</param>
+        public static async Task CreateEmbed(SocketCommandContext context, string emoji = null, string title = null, string content = null, List<Tuple<string, string>> inline = null, bool forceremoveoriginalmessage = false)
         {
 
             var embed = new EmbedBuilder();
