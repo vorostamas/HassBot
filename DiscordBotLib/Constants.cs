@@ -127,7 +127,7 @@
         /// Emojis
         /// </summary>
         public static readonly string EMOJI_HOMEASSISTANT =
-        ":hass:";
+                "<:hass:330944988936404992>";
         public static readonly string EMOJI_INFORMATION =
                 ":information_source:";
         public static readonly string EMOJI_STOPSIGN =
