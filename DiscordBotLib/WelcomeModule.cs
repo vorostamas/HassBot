@@ -6,6 +6,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 using Discord;
 using Discord.Commands;
+using Discord.WebSocket;
 using HassBotUtils;
 using System.Text;
 using System.Threading.Tasks;

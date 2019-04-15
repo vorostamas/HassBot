@@ -4,9 +4,11 @@
 //  FILE            : FormatModule.cs
 //  DESCRIPTION     : A class that implements ~format command
 ///////////////////////////////////////////////////////////////////////////////
+using Discord;
 using Discord.Commands;
 using System.Text;
 using System.Threading.Tasks;
+using System;
 
 namespace DiscordBotLib
 {
@@ -37,7 +39,11 @@ namespace DiscordBotLib
             sb.Append("Watch the animated gif here: <https://bit.ly/2GbfRJE>\n");
             sb.Append("**DO NOT** repeat posts. Please edit previously posted message, here is how -> <https://bit.ly/2qOOf1G>");
 
-            await ReplyAsync(sb.ToString(), false, null);
+            await Helper.CreateEmbed(
+                Context,
+                null, // Emoji to title
+                null, // Title
+                sb.ToString()); // Content of the message
         }
     }
 }

@@ -6,6 +6,8 @@ using HassBotDTOs;
 using HassBotUtils;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
@@ -18,7 +20,16 @@ namespace DiscordBotLib
     {
         private static readonly char PREFIX_1 = '~';
         private static readonly char PREFIX_2 = '.';
+
         private static readonly string POOP = "💩";
+
+        private static readonly string TOKEN = "token";
+        private static readonly string MAX_LINE_LIMIT =
+            @"Attention!: Please use https://paste.ubuntu.com to share code or message that is more than 10-15 lines. You have been warned, {0}!\n
+              Please read rule #6 here <#331130181102206976>";
+
+        private static readonly string OLD_HASTEBIN_MESSAGE =
+            "Please follow the rules, {0}! You have {1} warning(s) left. You posted a message/code that is more than 15 lines. It is moved here --> {2}";
 
         private static readonly string HASTEBIN_MESSAGE =
             "{0} posted a message that is too long, it is moved here --> {1}";
@@ -76,7 +87,7 @@ namespace DiscordBotLib
             // register commands
             await RegisterCommandsAsync();
 
-            string token = AppSettingsUtil.AppSettingsString("token", true, string.Empty);
+            string token = AppSettingsUtil.AppSettingsString(TOKEN, true, string.Empty);
             await _client.LoginAsync(TokenType.Bot, token);
             await _client.StartAsync();
 
@@ -116,37 +127,6 @@ namespace DiscordBotLib
             var context = new SocketCommandContext(_client, message);
             var channel = message.Channel as SocketGuildChannel;
 
-            // Debug - Used in development only Add this to App.config under AppSettings to use it:
-            // <add key="development" value="true" />
-            bool development = AppSettingsUtil.AppSettingsBool("development", false, false);
-            if (development)
-            {
-                logger.Debug("Author ID: " + message.Author.Id);
-                logger.Debug("Channel: " + channel);
-                logger.Debug("Content: " + message.Content);
-                foreach (Embed embed in message.Embeds)
-                {
-                    logger.Debug("Embed item (Author): " + embed.Author);
-                    logger.Debug("Embed item (Description): " + embed.Description);
-                    logger.Debug("Embed item (Image): " + embed.Image);
-                    logger.Debug("Embed item (Title): " + embed.Title);
-                    logger.Debug("Embed item (Url): " + embed.Url);
-                }
-                foreach (IMentionable user in message.MentionedUsers)
-                {
-                    logger.Debug("Mentioned user: " + user);
-                }
-                foreach (IMentionable role in message.MentionedRoles)
-                {
-                    logger.Debug("Mentioned role: " + role);
-                }
-                foreach (IMentionable mentionedchannel in message.MentionedChannels)
-                {
-                    logger.Debug("Mentioned channel: " + mentionedchannel);
-                }
-                logger.Debug(""); // Blank line for seperation
-            }
-
             // remove houndci-bot messages from #github channel
             await Helper.HandleHoundCIMessages(message, context, channel);
 
@@ -162,6 +142,9 @@ namespace DiscordBotLib
 
             // Block/Remove messages that contain harmful links
             await Helper.CheckBlockedDomains(message.Content, context);
+
+            // verify URLs
+            await Helper.VerifyUrls(message.Content, context);
 
             // YAML verification
             await Helper.ReactToYaml(message.Content, context);
@@ -196,7 +179,7 @@ namespace DiscordBotLib
             string command = key.Split(' ')[0];
 
             // handle custom command
-            await HandleCustomCommand(command, message, mentionedUsers, result);
+            await HandleCustomCommand(command, message, context, mentionedUsers, result);
         }
 
         private static async Task HandleLineCount(SocketUserMessage message, SocketCommandContext context)
@@ -228,7 +211,7 @@ namespace DiscordBotLib
 
                 // publish the URL link
                 string response = string.Format(HASTEBIN_MESSAGE, context.User.Mention, url);
-                await message.Channel.SendMessageAsync(response);
+                await Helper.CreateEmbed(context, null, null, response);
 
                 //// Violation Management
                 //ViolationsManager.TheViolationsManager.AddIncident(context.User.Id, context.User.Username, CommonViolationTypes.Codewall.ToString(), context.Channel.Name);                
@@ -322,12 +305,14 @@ namespace DiscordBotLib
                 return false;
         }
 
-        private static async Task HandleCustomCommand(string command, SocketUserMessage message, string mentionedUsers, IResult result)
+        private static async Task HandleCustomCommand(string command, SocketUserMessage message, SocketCommandContext context, string mentionedUsers, IResult result)
         {
             string response = HassBotCommands.Instance.Lookup(command);
             if (string.Empty != response)
             {
-                await message.Channel.SendMessageAsync(mentionedUsers + response);
+                await Helper.CreateEmbed(
+                    context, null, null,
+                    string.Format("{0} {1}", mentionedUsers, response));
             }
             else
             {
@@ -338,7 +323,9 @@ namespace DiscordBotLib
                 string lookupResult = Sitemap.Lookup(command);
                 if (string.Empty != lookupResult)
                 {
-                    await message.Channel.SendMessageAsync(mentionedUsers + lookupResult);
+                    await Helper.CreateEmbed(
+                        context, null, null,
+                        string.Format("{0} {1}", mentionedUsers, lookupResult));
                 }
             }
         }
