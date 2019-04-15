@@ -4,12 +4,7 @@
 //  FILE            : BreakingChanges.cs
 //  DESCRIPTION     : A class that implements ~breaking_changes command
 ///////////////////////////////////////////////////////////////////////////////
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Discord;
 using Discord.Commands;
 
 namespace DiscordBotLib

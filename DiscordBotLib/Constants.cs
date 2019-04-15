@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DiscordBotLib
+﻿namespace DiscordBotLib
 {
     public sealed class Constants
     {
@@ -100,12 +94,10 @@ namespace DiscordBotLib
                 "Invoked by: {0}";
         public static readonly string MAXLINELIMITMESSAGE =
                 "Attention!: Please use <https://www.hastebin.com> to share code that is more than 10-15 lines. You have been warned, {0}!;";
-
         public static readonly string COMMAND_REFRESH_SUCCESSFUL =
                 "Commands, Sitemap and Blocked Domains are reloaded and ready to go!";
         public static readonly string COMMAND_REFRESH_FAILED =
                 "Failed to refresh lookup data! contact @skalavala at https://www.github.com/skalavala";
-
         public static readonly string COMMAND_MESSAGE =
                 "Manage Hassbot data online at <https://github.com/awesome-automations/hassbot-data>. Make sure you run `~command refresh` after updating data online.";
         public static readonly string GOOD_YAML =
@@ -134,6 +126,8 @@ namespace DiscordBotLib
         /// <summary>
         /// Emojis
         /// </summary>
+        public static readonly string EMOJI_HOMEASSISTANT =
+        ":hass:";
         public static readonly string EMOJI_INFORMATION =
                 ":information_source:";
         public static readonly string EMOJI_STOPSIGN =

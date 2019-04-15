@@ -4,11 +4,8 @@
 //  FILE            : FormatModule.cs
 //  DESCRIPTION     : A class that implements ~format command
 ///////////////////////////////////////////////////////////////////////////////
-using Discord;
 using Discord.Commands;
-using System.Text;
 using System.Threading.Tasks;
-using System;
 
 namespace DiscordBotLib
 {
@@ -24,26 +21,25 @@ namespace DiscordBotLib
         }
 
         private async Task FormatCommand() {
-            StringBuilder sb = new StringBuilder();
+            string emoji = null;
+            string title = null;
+            string body = null;
 
             // mention users if any
             string mentionedUsers = base.MentionedUsers();
 
             if (mentionedUsers.Trim() != string.Empty )
-                sb.Append(mentionedUsers + " ");
+                body += mentionedUsers + " ";
 
-            sb.Append("To format your text as code, enter three backticks on the first line, press Enter for a new line, paste your code, press Enter again for another new line, and lastly three more backticks. Here's an example:\n\n");
-            sb.Append("\\`\\`\\`\n");
-            sb.Append("code here\n");
-            sb.Append("\\`\\`\\`\n");
-            sb.Append("Watch the animated gif here: <https://bit.ly/2GbfRJE>\n");
-            sb.Append("**DO NOT** repeat posts. Please edit previously posted message, here is how -> <https://bit.ly/2qOOf1G>");
+            body += "To format your text as code, enter three backticks on the first line, press Enter for a new line, paste your code, press Enter again for another new line, and lastly three more backticks. Here's an example:\n\n";
+            body += "\\`\\`\\`\n";
+            body += "code here\n";
+            body += "\\`\\`\\`\n";
+            body += "Watch the animated gif here: <https://bit.ly/2GbfRJE>\n";
+            body += "**DO NOT** repeat posts. Please edit previously posted message, here is how -> <https://bit.ly/2qOOf1G>";
 
-            await Helper.CreateEmbed(
-                Context,
-                null, // Emoji to title
-                null, // Title
-                sb.ToString()); // Content of the message
+            // Send response
+            await Helper.CreateEmbed(Context, emoji, title, body, null, true);
         }
     }
 }

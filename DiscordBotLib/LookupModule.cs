@@ -13,7 +13,6 @@ using System.Xml;
 
 using HassBotData;
 using System;
-using System.Linq;
 
 namespace DiscordBotLib
 {
@@ -38,7 +37,7 @@ namespace DiscordBotLib
 
             string emoji = String.Empty;
             string title = String.Empty;
-            string msg = String.Empty;
+            string body = String.Empty;
 
             string result = Helper.SitemapLookup(input);
             result = result.Trim();
@@ -50,14 +49,16 @@ namespace DiscordBotLib
             if (result == string.Empty) {
                 emoji = ":frowning:";
                 title = string.Format("Searched for '{0}': ", input);
-                msg = string.Format("Couldn't find it!\n\nYou may try `~deepsearch {0}`.", input);
+                body = string.Format("Couldn't find it!\n\nYou may try `~deepsearch {0}`.", input);
             }
             else {
                 emoji = ":smile:";
                 title = "Here is what I found:";
-                msg = result;
+                body = result;
             }
-            await Helper.CreateEmbed(Context, emoji, title, msg, null, true);
+
+            // Send response
+            await Helper.CreateEmbed(Context, emoji, title, body, null, true);
         }
 
         [Command("deepsearch")]

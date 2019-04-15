@@ -23,14 +23,6 @@ namespace DiscordBotLib
 
         private static readonly string POOP = "💩";
 
-        private static readonly string TOKEN = "token";
-        private static readonly string MAX_LINE_LIMIT =
-            @"Attention!: Please use https://paste.ubuntu.com to share code or message that is more than 10-15 lines. You have been warned, {0}!\n
-              Please read rule #6 here <#331130181102206976>";
-
-        private static readonly string OLD_HASTEBIN_MESSAGE =
-            "Please follow the rules, {0}! You have {1} warning(s) left. You posted a message/code that is more than 15 lines. It is moved here --> {2}";
-
         private static readonly string HASTEBIN_MESSAGE =
             "{0} posted a message that is too long, it is moved here --> {1}";
 
@@ -87,7 +79,7 @@ namespace DiscordBotLib
             // register commands
             await RegisterCommandsAsync();
 
-            string token = AppSettingsUtil.AppSettingsString(TOKEN, true, string.Empty);
+            string token = AppSettingsUtil.AppSettingsString("token", true, string.Empty);
             await _client.LoginAsync(TokenType.Bot, token);
             await _client.StartAsync();
 
@@ -126,6 +118,37 @@ namespace DiscordBotLib
             // Create a Command Context.
             var context = new SocketCommandContext(_client, message);
             var channel = message.Channel as SocketGuildChannel;
+
+            // Debug - Used in development only Add this to App.config under AppSettings to use it:	
+            // <add key="development" value="true" />	
+            bool development = AppSettingsUtil.AppSettingsBool("development", false, false);
+            if (development)
+            {
+                logger.Debug("Author ID: " + message.Author.Id);
+                logger.Debug("Channel: " + channel);
+                logger.Debug("Content: " + message.Content);
+                foreach (Embed embed in message.Embeds)
+                {
+                    logger.Debug("Embed item (Author): " + embed.Author);
+                    logger.Debug("Embed item (Description): " + embed.Description);
+                    logger.Debug("Embed item (Image): " + embed.Image);
+                    logger.Debug("Embed item (Title): " + embed.Title);
+                    logger.Debug("Embed item (Url): " + embed.Url);
+                }
+                foreach (IMentionable user in message.MentionedUsers)
+                {
+                    logger.Debug("Mentioned user: " + user);
+                }
+                foreach (IMentionable role in message.MentionedRoles)
+                {
+                    logger.Debug("Mentioned role: " + role);
+                }
+                foreach (IMentionable mentionedchannel in message.MentionedChannels)
+                {
+                    logger.Debug("Mentioned channel: " + mentionedchannel);
+                }
+                logger.Debug(""); // Blank line for seperation	
+            }
 
             // remove houndci-bot messages from #github channel
             await Helper.HandleHoundCIMessages(message, context, channel);

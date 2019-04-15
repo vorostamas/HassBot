@@ -5,7 +5,6 @@
 //  DESCRIPTION     : A class that implements ~lmgtfy command
 ///////////////////////////////////////////////////////////////////////////////
 using Discord.Commands;
-using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 

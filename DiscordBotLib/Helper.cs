@@ -13,7 +13,6 @@ using Discord.Commands;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml;
-using System.Text.RegularExpressions;
 
 namespace DiscordBotLib
 {
@@ -87,7 +86,7 @@ namespace DiscordBotLib
             foreach (Embed e in message.Embeds)
             {
                 EmbedAuthor author = (EmbedAuthor)e.Author;
-                if (author.ToString() == "houndci-bot")
+                if (author.ToString() == "houndci-bot" || author.ToString() == "codecov" || author.ToString() == "github-actions")
                 {
                     //logger.InfoFormat("Deleting the houndci-bot message: {0} => {1}: {2}",
                     //                   e.Url, e.Title, e.Description);
@@ -237,12 +236,6 @@ namespace DiscordBotLib
                 var errorEmoji = new Emoji(BAD_EMOJI);
                 await context.Message.AddReactionAsync(errorEmoji);
             }
-        }
-
-        public static async Task VerifyUrls(string content, SocketCommandContext context)
-        {
-            Regex re = new Regex(@"((http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?)");
-
         }
 
         public static async Task CheckBlockedDomains(string content, SocketCommandContext context)
@@ -457,12 +450,12 @@ namespace DiscordBotLib
         }
 
         public static async Task CreateEmbed(
-            SocketCommandContext context,
-            string emoji = null,
-            string title = null,
-            string content = null,
-            List<Tuple<string, string>> inline = null,
-            bool forceremoveoriginalmessage = false)
+            SocketCommandContext context, // The context of the message that triggered the bot to react.
+            string emoji = null, // Emoji for the embedded post, this is inserted before the title.
+            string title = null, // Title for the embedded post
+            string content = null, // Content(body) for the embedded post
+            List<Tuple<string, string>> inline = null, // Special inline items of the embedded post.
+            bool forceremoveoriginalmessage = false) // Flag to indicate that the command post allways should be deleted, if false the logic in the DeleteMessage function aplies.
         {
 
             var embed = new EmbedBuilder();
@@ -470,17 +463,15 @@ namespace DiscordBotLib
             // Add a random color to the embedded post
             embed.WithColor(Helper.GetRandomColor());
 
-            // Add Title
-            // Add emoji if any
+            // Add emoji to title if any
             if (emoji != null || emoji != String.Empty)
             {
-                embed.WithTitle(emoji + " " + title);
-            }
-            else
-            {
-                embed.WithTitle(title);
+                title = string.Format("{0} {1}", emoji, title);
             }
 
+            // Add Title
+            embed.WithTitle(title);
+            
             // Add content
             embed.WithDescription(content);
             if (inline != null)
