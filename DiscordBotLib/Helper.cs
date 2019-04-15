@@ -495,12 +495,12 @@ namespace DiscordBotLib
             embed.WithFooter(footer => footer.Text = string.Format(
                 Constants.INVOKED_BY, context.User.Username));
 
-            // Add timestamp
-            embed.WithCurrentTimestamp();
-
             // Remove original if needed
-            await DeleteMessage(context, forceremoveoriginalmessage);
-
+            if (!context.Channel.Name.StartsWith("@"))
+            {
+                await DeleteMessage(context, forceremoveoriginalmessage);
+            }
+            
             // Send message
             await context.Channel.SendMessageAsync(string.Empty, false, embed);
         }
