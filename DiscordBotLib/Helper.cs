@@ -245,7 +245,7 @@ namespace DiscordBotLib
             {
                 if (content.Contains(domain.Url))
                 {
-                    if (domain.Ban == true )
+                    if (domain.Ban == true)
                     {
                         // exclude Mods from the bans
                         if (IsMod(context.User))
@@ -256,7 +256,7 @@ namespace DiscordBotLib
                         await context.Guild.AddBanAsync(context.User, 1, reason, null);
 
                         // post a message in the channel about the permanent ban
-                        await context.Message.Channel.SendMessageAsync("BAM!!! " + reason );
+                        await context.Message.Channel.SendMessageAsync("BAM!!! " + reason);
 
                         // send a message to #botspam channel as well
                         string detailedMessage = "Woohoo! " + reason + " Posted message: " + content;
@@ -411,6 +411,98 @@ namespace DiscordBotLib
                 return false;
             }
             return true;
+        }
+
+        /// <summary>
+        ///     Deletes the message that triggered the bot, if the message did not contain any extra words.
+        /// </summary>
+        /// <param name="context">The context of the message that triggered the bot to react.</param>
+        /// <param name="forceremoveoriginalmessage">Flag to indicate that the command post allways should be deleted, if false the logic in this method aplies.</param>
+        public static async Task DeleteMessage(SocketCommandContext context, bool forceremoveoriginalmessage)
+        {
+            if (forceremoveoriginalmessage)
+            {
+                logger.Debug("Deleting command message " + context.Message + " from " + context.User.Username + " in " + context.Channel.Name);
+                await context.Message.DeleteAsync();
+            }
+            else
+            {
+                string leftovercontent = context.Message.Content.ToString();
+                string invokedcommand = leftovercontent.Split(' ')[0];
+                leftovercontent = leftovercontent.Replace(invokedcommand, "");
+                leftovercontent = leftovercontent.Replace(" ", "");
+
+                if (context.Message.MentionedUsers.ToString().Length != 0)
+                {
+                    foreach (var item in context.Message.MentionedUsers)
+                    {
+                        leftovercontent = leftovercontent.Replace($"<@{item.Id}>", "");
+                    }
+                }
+
+                if (leftovercontent.Length != 0)
+                {
+                    logger.Debug("Message had extra content, skipping delete.");
+                }
+                else
+                {
+                    logger.Debug("Deleting command message " +
+                        context.Message + " from " + context.User.Username + " in " + context.Channel.Name);
+                    await context.Message.DeleteAsync();
+                }
+            }
+
+        }
+
+        /// <summary>
+        ///     Post a nice looking embeded post in as a response from the bot.
+        /// </summary>
+        /// <param name="context">The context of the message that triggered the bot to react.</param>
+        /// <param name="emoji">Emoji for the embedded post, this is inserted before the title. (Default: null)</param>
+        /// <param name="title">Title for the embedded post. (Default: null)</param>
+        /// <param name="content">Content(body) for the embedded post. (Default: null)</param>
+        /// <param name="inline">Special inline items of the embedded post. (Default: null)</param>
+        /// <param name="forceremoveoriginalmessage">Flag to indicate that the command post allways should be deleted, if false the logic in the DeleteMessage method aplies. (Default: false)</param>
+        public static async Task CreateEmbed(SocketCommandContext context, string emoji = null, string title = null, string content = null, List<Tuple<string, string>> inline = null, bool forceremoveoriginalmessage = false)
+        {
+
+            var embed = new EmbedBuilder();
+
+            // Add a random color to the embedded post
+            embed.WithColor(Helper.GetRandomColor());
+
+            // Add emoji to title if any
+            if (emoji != null || emoji != String.Empty)
+            {
+                title = string.Format("{0} {1}", emoji, title);
+            }
+
+            // Add Title
+            embed.WithTitle(title);
+            
+            // Add content
+            embed.WithDescription(content);
+            if (inline != null)
+            {
+                foreach (Tuple<string, string> inlineitem in inline)
+                {
+                    embed.AddInlineField(inlineitem.Item1, inlineitem.Item2);
+                }
+            }
+
+            // Footer
+            // Add invoker
+            embed.WithFooter(footer => footer.Text = string.Format(
+                Constants.INVOKED_BY, context.User.Username));
+
+            // Add timestamp
+            embed.WithCurrentTimestamp();
+
+            // Remove original if needed
+            await DeleteMessage(context, forceremoveoriginalmessage);
+
+            // Send message
+            await context.Channel.SendMessageAsync(string.Empty, false, embed);
         }
     }
 }

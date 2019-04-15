@@ -4,7 +4,6 @@
 //  FILE            : Magic8BallModule.cs
 //  DESCRIPTION     : A class that implements ~8ball command
 ///////////////////////////////////////////////////////////////////////////////
-using Discord;
 using Discord.Commands;
 using System;
 using System.Linq;
@@ -38,10 +37,11 @@ namespace DiscordBotLib
                 "No","No Doubt About It","Positively","Prospect Good","So It Shall Be","The Stars Say No",
                 "Unlikely","Very Likely","Yes","You Can Count On It" };
 
-            var embed = new EmbedBuilder();
-            embed.WithTitle(":8ball:");
-            embed.WithColor(Helper.GetRandomColor());
+            // Initialize strings
             string prediction = string.Empty;
+            string emoji = ":8ball:";
+            string title = "8Ball prdiction:";
+            string body = null;
 
             // additional logic, so that the 8Ball prediction doesn't repeat
             while (true) {
@@ -51,16 +51,16 @@ namespace DiscordBotLib
                     break;
             }
 
-            // mention users if any
-            string mentionedUsers = base.MentionedUsers();
-
             // update previous prediction
             previousPrediction = prediction;
-            if ( string.Empty == mentionedUsers)
-                embed.AddField("8Ball Prediction:", prediction);
-            else
-                embed.AddField("8Ball Prediction:", mentionedUsers + prediction);
-            await ReplyAsync(string.Empty, false, embed);
+
+            // question && answer
+            body = $"Question: _{Context.Message.Content.Replace(".8ball ", null)}_";
+            body += "\n"; // New line
+            body += $"Answer: **{prediction}**";
+
+            // Send response
+            await Helper.CreateEmbed(Context, emoji, title, body, null, true);
         }
     }
 }

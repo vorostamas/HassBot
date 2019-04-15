@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Xml;
 
 using HassBotData;
+using System;
 
 namespace DiscordBotLib
 {
@@ -33,6 +34,11 @@ namespace DiscordBotLib
         }
 
         private async Task LookupCommand(string input) {
+
+            string emoji = String.Empty;
+            string title = String.Empty;
+            string body = String.Empty;
+
             string result = Helper.SitemapLookup(input);
             result = result.Trim();
 
@@ -41,16 +47,18 @@ namespace DiscordBotLib
 
             var embed = new EmbedBuilder();
             if (result == string.Empty) {
-                embed.WithTitle(string.Format("Searched for '{0}': ", input));
-                embed.WithColor(Helper.GetRandomColor());
-                string msg = string.Format("You may try `~deepsearch {0}`.", input);
-                embed.AddInlineField("Couldn't find it! :frowning:", msg);
+                emoji = ":frowning:";
+                title = string.Format("Searched for '{0}': ", input);
+                body = string.Format("Couldn't find it!\n\nYou may try `~deepsearch {0}`.", input);
             }
             else {
-                embed.WithColor(Helper.GetRandomColor());
-                embed.AddInlineField("Here is what I found: :smile:", mentionedUsers + result);
+                emoji = ":smile:";
+                title = "Here is what I found:";
+                body = result;
             }
-            await ReplyAsync(string.Empty, false, embed);
+
+            // Send response
+            await Helper.CreateEmbed(Context, emoji, title, body, null, true);
         }
 
         [Command("deepsearch")]

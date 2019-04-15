@@ -6,6 +6,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 using Discord;
 using Discord.Commands;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DiscordBotLib
@@ -14,22 +15,25 @@ namespace DiscordBotLib
 
         [Command("ping"), Alias("pong")]
         public async Task PingAsync() {
-            string response = string.Empty;
+            string emoji = Constants.EMOJI_PING_PONG;
+            string title = "{0}?";
+            string body = null;
+
             string request = Context.Message.Content.ToLower();
             request = request.Replace("~", string.Empty).Replace(".", string.Empty);
 
             if (request == "ping")
-                response = "PONG!";
+                body = "PONG!";
             else if (request == "pong")
-                response = "PING!!!";
-            if (string.Empty == response)
+                body = "PING!!!";
+            if (body == null)
                 return;
 
-            var embed = new EmbedBuilder();
-            embed.WithTitle(Constants.EMOJI_PING_PONG);
-            embed.WithColor(Color.DarkRed);
-            embed.AddField(request + "?", response);
-            await ReplyAsync(string.Empty, false, embed);
+            // Set title
+            title = string.Format(title, request);
+
+            // Send response
+            await Helper.CreateEmbed(Context, emoji, title, body, null, true);
         }
     }
 }

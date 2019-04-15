@@ -6,6 +6,8 @@ using HassBotDTOs;
 using HassBotUtils;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
@@ -19,7 +21,6 @@ namespace DiscordBotLib
         private static readonly char PREFIX_1 = '~';
         private static readonly char PREFIX_2 = '.';
         private static readonly string POOP = "💩";
-
         private static readonly string HASTEBIN_MESSAGE =
             "{0} posted a message that is too long, it is moved here --> {1}";
 
@@ -144,7 +145,7 @@ namespace DiscordBotLib
                 {
                     logger.Debug("Mentioned channel: " + mentionedchannel);
                 }
-                logger.Debug(""); // Blank line for seperation
+                logger.Debug(""); // Blank line for seperation	
             }
 
             // remove houndci-bot messages from #github channel
@@ -196,7 +197,7 @@ namespace DiscordBotLib
             string command = key.Split(' ')[0];
 
             // handle custom command
-            await HandleCustomCommand(command, message, mentionedUsers, result);
+            await HandleCustomCommand(command, message, context, mentionedUsers, result);
         }
 
         private static async Task HandleLineCount(SocketUserMessage message, SocketCommandContext context)
@@ -228,7 +229,7 @@ namespace DiscordBotLib
 
                 // publish the URL link
                 string response = string.Format(HASTEBIN_MESSAGE, context.User.Mention, url);
-                await message.Channel.SendMessageAsync(response);
+                await Helper.CreateEmbed(context, null, null, response);
 
                 //// Violation Management
                 //ViolationsManager.TheViolationsManager.AddIncident(context.User.Id, context.User.Username, CommonViolationTypes.Codewall.ToString(), context.Channel.Name);                
@@ -322,12 +323,14 @@ namespace DiscordBotLib
                 return false;
         }
 
-        private static async Task HandleCustomCommand(string command, SocketUserMessage message, string mentionedUsers, IResult result)
+        private static async Task HandleCustomCommand(string command, SocketUserMessage message, SocketCommandContext context, string mentionedUsers, IResult result)
         {
             string response = HassBotCommands.Instance.Lookup(command);
             if (string.Empty != response)
             {
-                await message.Channel.SendMessageAsync(mentionedUsers + response);
+                await Helper.CreateEmbed(
+                    context, null, null,
+                    string.Format("{0} {1}", mentionedUsers, response));
             }
             else
             {
@@ -338,7 +341,9 @@ namespace DiscordBotLib
                 string lookupResult = Sitemap.Lookup(command);
                 if (string.Empty != lookupResult)
                 {
-                    await message.Channel.SendMessageAsync(mentionedUsers + lookupResult);
+                    await Helper.CreateEmbed(
+                        context, null, null,
+                        string.Format("{0} {1}", mentionedUsers, lookupResult));
                 }
             }
         }
