@@ -495,9 +495,6 @@ namespace DiscordBotLib
             embed.WithFooter(footer => footer.Text = string.Format(
                 Constants.INVOKED_BY, context.User.Username));
 
-            // Add timestamp
-            embed.WithCurrentTimestamp();
-
             // Remove original if needed
             if (!context.Channel.Name.StartsWith("@"))
             {
