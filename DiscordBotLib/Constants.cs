@@ -96,9 +96,10 @@ namespace DiscordBotLib
                 "You have not subscribed to '{0}'.";
         public static readonly string INFO_UNSUBSCRIBE_SUCCESS =
                 "Successfully unsubscribed to '{0}'.";
-
+        public static readonly string INVOKED_BY =
+                "Invoked by: {0}";
         public static readonly string MAXLINELIMITMESSAGE =
-            "Attention!: Please use <https://www.hastebin.com> to share code that is more than 10-15 lines. You have been warned, {0}!;";
+                "Attention!: Please use <https://www.hastebin.com> to share code that is more than 10-15 lines. You have been warned, {0}!;";
 
         public static readonly string COMMAND_REFRESH_SUCCESSFUL =
                 "Commands, Sitemap and Blocked Domains are reloaded and ready to go!";
