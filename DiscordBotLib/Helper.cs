@@ -499,8 +499,11 @@ namespace DiscordBotLib
             embed.WithCurrentTimestamp();
 
             // Remove original if needed
-            await DeleteMessage(context, forceremoveoriginalmessage);
-
+            if (!context.Channel.Name.StartsWith("@"))
+            {
+                await DeleteMessage(context, forceremoveoriginalmessage);
+            }
+            
             // Send message
             await context.Channel.SendMessageAsync(string.Empty, false, embed);
         }
