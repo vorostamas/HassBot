@@ -43,6 +43,7 @@ namespace DiscordBotLib
             inline.Add(new Tuple<string, string>("Memory", $"{ GetMemoryUsage() }"));
             inline.Add(new Tuple<string, string>("Discord Lib Version", $"{ GetLibrary() }"));
             inline.Add(new Tuple<string, string>("Latency", $" { GetLatency() }"));
+            inline.Add(new Tuple<string, string>("Maintainers", " @skalavala and @ludeeus"));
 
             // mention users if any
             string mentionedUsers = base.MentionedUsers();
