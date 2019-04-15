@@ -48,7 +48,7 @@ namespace DiscordBotLib
         private async Task GetHAVersion() {
             HomeAssistantVersion ha = GetHAVersions();
 
-            string emoji = ":hass:";
+            string emoji = Constants.EMOJI_HOMEASSISTANT;
             string title = "Here are the current Home Assistant software versions.";
             string body = null;
             var inline = new List<Tuple<string, string>>();
@@ -71,7 +71,7 @@ namespace DiscordBotLib
             HassIOVersion beta = GetHassIOVersion(HassioRelease.Beta);
             HassIOVersion stable = GetHassIOVersion(HassioRelease.Stable);
 
-            string emoji = ":hass:";
+            string emoji = Constants.EMOJI_HOMEASSISTANT;
             string title = "Here are the current HASSIO software versions.";
             string body = null;
             var inline = new List<Tuple<string, string>>();

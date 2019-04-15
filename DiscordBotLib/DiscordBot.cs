@@ -20,9 +20,7 @@ namespace DiscordBotLib
     {
         private static readonly char PREFIX_1 = '~';
         private static readonly char PREFIX_2 = '.';
-
         private static readonly string POOP = "💩";
-
         private static readonly string HASTEBIN_MESSAGE =
             "{0} posted a message that is too long, it is moved here --> {1}";
 
@@ -119,8 +117,8 @@ namespace DiscordBotLib
             var context = new SocketCommandContext(_client, message);
             var channel = message.Channel as SocketGuildChannel;
 
-            // Debug - Used in development only Add this to App.config under AppSettings to use it:	
-            // <add key="development" value="true" />	
+            // Debug - Used in development only Add this to App.config under AppSettings to use it:
+            // <add key="development" value="true" />
             bool development = AppSettingsUtil.AppSettingsBool("development", false, false);
             if (development)
             {
@@ -165,9 +163,6 @@ namespace DiscordBotLib
 
             // Block/Remove messages that contain harmful links
             await Helper.CheckBlockedDomains(message.Content, context);
-
-            // verify URLs
-            await Helper.VerifyUrls(message.Content, context);
 
             // YAML verification
             await Helper.ReactToYaml(message.Content, context);
