@@ -4,12 +4,7 @@
 //  FILE            : AwayFromKeyboard.cs
 //  DESCRIPTION     : A class that implements ~away command
 ///////////////////////////////////////////////////////////////////////////////
-using Discord;
 using Discord.Commands;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using HassBotData;
 using HassBotDTOs;

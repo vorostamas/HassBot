@@ -4,10 +4,6 @@
 //  FILE            : BreakingChanges.cs
 //  DESCRIPTION     : A class that implements ~breaking_changes command
 ///////////////////////////////////////////////////////////////////////////////
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
@@ -25,9 +21,7 @@ namespace DiscordBotLib
         [Command("breaking_changes")]
         public async Task BreakingChangesAsync([Remainder]string version)
         {
-            string emoji = null;
-            string title = null;
-            string body = null;
+            var embed = new EmbedBuilder();
 
             // get the release notes of the specified version number
             string url = Helper.SitemapLookup("release-" + version);
@@ -35,22 +29,21 @@ namespace DiscordBotLib
 
             if (url == string.Empty)
             {
-                emoji = Constants.EMOJI_THUMBSDOWN;
-                title = "Sorry!";
-                body = $"No release changes found for {version}!";
+                embed.WithTitle(Constants.EMOJI_THUMBSDOWN);
+                embed.WithColor(Helper.GetRandomColor());
+                embed.AddField("Sorry!", "No release changes found for that version!");
+                await ReplyAsync(string.Empty, false, embed);
+                return;
             }
             else
             {
-                if (url.EndsWith("/"))
+                if ( url.EndsWith("/"))
                     url += "#breaking-changes";
                 else
                     url += "/#breaking-changes";
-
-                body = "<" + url + ">";
             }
 
-            // Send response
-            await Helper.CreateEmbed(Context, emoji, title, body, null, true);
+            await ReplyAsync("<" + url + ">" );
         }
     }
 }

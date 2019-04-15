@@ -6,7 +6,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 using Discord;
 using Discord.Commands;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace DiscordBotLib
@@ -26,11 +25,11 @@ namespace DiscordBotLib
             if (string.Empty == response)
                 return;
 
-            await Helper.CreateEmbed(
-                Context,
-                Constants.EMOJI_PING_PONG, // Emoji to title
-                request + "?", // Title
-                response); // Content of the message
+            var embed = new EmbedBuilder();
+            embed.WithTitle(Constants.EMOJI_PING_PONG);
+            embed.WithColor(Color.DarkRed);
+            embed.AddField(request + "?", response);
+            await ReplyAsync(string.Empty, false, embed);
         }
     }
 }

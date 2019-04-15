@@ -7,12 +7,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 using System.Threading.Tasks;
 using Discord.Commands;
-using System;
-using System.Diagnostics;
-using System.Linq;
 using Discord;
-using Discord.WebSocket;
-using HassBotUtils;
 using System.Reflection;
 
 namespace DiscordBotLib

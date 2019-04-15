@@ -7,13 +7,10 @@
 using System.Threading.Tasks;
 using Discord.Commands;
 using System;
-using System.Diagnostics;
-using System.Linq;
 using Discord;
 using HassBotDTOs;
 using Newtonsoft.Json;
 using System.Reflection;
-using System.Collections.Generic;
 
 namespace DiscordBotLib
 {
@@ -51,53 +48,50 @@ namespace DiscordBotLib
         private async Task GetHAVersion() {
             HomeAssistantVersion ha = GetHAVersions();
 
-            string emoji = ":hass:";
-            string title = "Here are the current Home Assistant software versions.";
-            string body = null;
-            var inline = new List<Tuple<string, string>>();
+            var embed = new EmbedBuilder();
+            embed.WithTitle("Here are the current Home Assistant software versions.\n");
+            embed.WithColor(Helper.GetRandomColor());
 
             if (null != ha) {
-                inline.Add(new Tuple<string, string>("Stable", ha.Stable));
-                inline.Add(new Tuple<string, string>("Beta", ha.Beta));
+                // embed.AddInlineField("As of", DateTime.Now.ToShortDateString());
+                embed.AddInlineField("Stable", ha.Stable);
+                embed.AddInlineField("Beta", ha.Beta);
             }
 
             // mention users if any
             string mentionedUsers = base.MentionedUsers();
             if (string.Empty != mentionedUsers)
-                body = string.Format("FYI {0} \n", mentionedUsers) + body;
+                embed.AddInlineField("FYI", mentionedUsers);
 
-            // Send response
-            await Helper.CreateEmbed(Context, emoji, title, body, inline, true);
+            await ReplyAsync(string.Empty, false, embed);
         }
 
         private async Task GetHASSIOVersion() {
             HassIOVersion beta = GetHassIOVersion(HassioRelease.Beta);
             HassIOVersion stable = GetHassIOVersion(HassioRelease.Stable);
 
-            string emoji = ":hass:";
-            string title = "Here are the current HASSIO software versions.";
-            string body = null;
-            var inline = new List<Tuple<string, string>>();
+            var embed = new EmbedBuilder();
+            embed.WithTitle("Here are the current HASSIO software versions.\n");
+            embed.WithColor(Helper.GetRandomColor());
 
             if (null != stable) {
-                inline.Add(new Tuple<string, string>("Stable Supervisor", stable.HassOS));
-                inline.Add(new Tuple<string, string>("Stable HassOS", stable.Supervisor));
-                inline.Add(new Tuple<string, string>("Stable Home Assistant", stable.HomeAssistant));
+                embed.AddInlineField("Stable", stable.HassOS);
+                embed.AddInlineField("Stable Supervisor", stable.Supervisor);
+                embed.AddInlineField("Stable Home Assistant", stable.HomeAssistant);
             }
 
             if (null != beta) {
-                inline.Add(new Tuple<string, string>("Beta Supervisor", beta.HassOS));
-                inline.Add(new Tuple<string, string>("Beta HassOS", beta.Supervisor));
-                inline.Add(new Tuple<string, string>("Beta Home Assistant", beta.HomeAssistant));
+                embed.AddInlineField("Beta", beta.HassOS);
+                embed.AddInlineField("Beta Supervisor", beta.Supervisor);
+                embed.AddInlineField("Beta Home Assistant", beta.HomeAssistant);
             }
 
             // mention users if any
             string mentionedUsers = base.MentionedUsers();
             if (string.Empty != mentionedUsers)
-                body = string.Format("FYI {0} \n", mentionedUsers) + body;
+                embed.AddInlineField("FYI", mentionedUsers);
 
-            // Send response
-            await Helper.CreateEmbed(Context, emoji, title, body, inline, true);
+            await ReplyAsync(string.Empty, false, embed);
         }
 
         public static HassIOVersion GetHassIOVersion(HassioRelease release) {
@@ -140,7 +134,7 @@ namespace DiscordBotLib
                     }
                 }
                 foreach (dynamic item in entries) {
-                    if (item.draft == false) {
+                    if (item.prerelease == true && item.draft == false) {
                         ha.Beta = item.name;
                         break;
                     }

@@ -13,7 +13,6 @@ using Discord.Commands;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml;
-using System.Text.RegularExpressions;
 
 namespace DiscordBotLib
 {
@@ -239,12 +238,6 @@ namespace DiscordBotLib
             }
         }
 
-        public static async Task VerifyUrls(string content, SocketCommandContext context)
-        {
-            Regex re = new Regex(@"((http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?)");
-
-        }
-
         public static async Task CheckBlockedDomains(string content, SocketCommandContext context)
         {
             List<BlockedDomainDTO> blockedDomains = BlockedDomains.Instance.Domains();
@@ -252,7 +245,7 @@ namespace DiscordBotLib
             {
                 if (content.Contains(domain.Url))
                 {
-                    if (domain.Ban == true)
+                    if (domain.Ban == true )
                     {
                         // exclude Mods from the bans
                         if (IsMod(context.User))
@@ -263,7 +256,7 @@ namespace DiscordBotLib
                         await context.Guild.AddBanAsync(context.User, 1, reason, null);
 
                         // post a message in the channel about the permanent ban
-                        await context.Message.Channel.SendMessageAsync("BAM!!! " + reason);
+                        await context.Message.Channel.SendMessageAsync("BAM!!! " + reason );
 
                         // send a message to #botspam channel as well
                         string detailedMessage = "Woohoo! " + reason + " Posted message: " + content;
@@ -418,92 +411,6 @@ namespace DiscordBotLib
                 return false;
             }
             return true;
-        }
-
-        public static async Task DeleteMessage(SocketCommandContext context, bool forceremoveoriginalmessage)
-        {
-            if (forceremoveoriginalmessage)
-            {
-                logger.Debug("Deleting command message " + context.Message + " from " + context.User.Username + " in " + context.Channel.Name);
-                await context.Message.DeleteAsync();
-            }
-            else
-            {
-                string leftovercontent = context.Message.Content.ToString();
-                string invokedcommand = leftovercontent.Split(' ')[0];
-                leftovercontent = leftovercontent.Replace(invokedcommand, "");
-                leftovercontent = leftovercontent.Replace(" ", "");
-
-                if (context.Message.MentionedUsers.ToString().Length != 0)
-                {
-                    foreach (var item in context.Message.MentionedUsers)
-                    {
-                        leftovercontent = leftovercontent.Replace($"<@{item.Id}>", "");
-                    }
-                }
-
-                if (leftovercontent.Length != 0)
-                {
-                    logger.Debug("Message had extra content, skipping delete.");
-                }
-                else
-                {
-                    logger.Debug("Deleting command message " +
-                        context.Message + " from " + context.User.Username + " in " + context.Channel.Name);
-                    await context.Message.DeleteAsync();
-                }
-            }
-
-        }
-
-        public static async Task CreateEmbed(
-            SocketCommandContext context,
-            string emoji = null,
-            string title = null,
-            string content = null,
-            List<Tuple<string, string>> inline = null,
-            bool forceremoveoriginalmessage = false)
-        {
-
-            var embed = new EmbedBuilder();
-
-            // Add a random color to the embedded post
-            embed.WithColor(Helper.GetRandomColor());
-
-            // Add Title
-            // Add emoji if any
-            if (emoji != null || emoji != String.Empty)
-            {
-                embed.WithTitle(emoji + " " + title);
-            }
-            else
-            {
-                embed.WithTitle(title);
-            }
-
-            // Add content
-            embed.WithDescription(content);
-            if (inline != null)
-            {
-                foreach (Tuple<string, string> inlineitem in inline)
-                {
-                    embed.AddInlineField(inlineitem.Item1, inlineitem.Item2);
-                }
-            }
-
-            // Footer
-            // Add invoker
-            embed.WithFooter(footer => footer.Text = string.Format(
-                Constants.INVOKED_BY, context.User.Username));
-
-            // Add timestamp
-            embed.WithCurrentTimestamp();
-
-            // Remove original if needed
-            await DeleteMessage(context, forceremoveoriginalmessage);
-
-            // Send message
-            await context.Channel.SendMessageAsync(string.Empty, false, embed);
         }
     }
 }

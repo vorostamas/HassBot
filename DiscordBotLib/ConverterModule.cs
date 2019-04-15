@@ -6,10 +6,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 using System.Threading.Tasks;
 using Discord.Commands;
-using System;
-using System.Diagnostics;
-using System.Linq;
-using Discord;
 
 namespace DiscordBotLib
 {

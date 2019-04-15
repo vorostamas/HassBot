@@ -51,6 +51,7 @@
     </root>
   </log4net>  
   <appSettings>
+    <add key="development" value="false" />
     <add key="maxLinesLimit" value="15" />
     <add key="token" value="" />
     <add key="sitemapUrl" value="https://home-assistant.io/sitemap.xml" />
