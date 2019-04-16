@@ -72,7 +72,7 @@ namespace DiscordBotLib
                 }
             }
 
-            string result = sb.ToString();
+            string result = string.Format("Deepsearch result:\n{0}", sb.ToString());
 
             if (result.Length > 1900) {
                 result = result.Substring(0, 1850);
