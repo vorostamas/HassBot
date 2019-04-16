@@ -79,7 +79,7 @@ namespace DiscordBotLib
                 return;
 
             // A list of bots to monitor
-            List<string> botfilter = new List<string>() { "houndci-bot", "github-actions" };
+            List<string> botfilter = new List<string>() { "houndci-bot" };
 
             // check if the sender is a known bot before deleting.
             foreach (Embed e in message.Embeds)
