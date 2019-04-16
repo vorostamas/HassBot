@@ -356,7 +356,10 @@ namespace DiscordBotLib
 
         public static async Task RefreshData(SocketCommandContext context)
         {
-            var embed = new EmbedBuilder();
+            string emoji = Constants.EMOJI_THUMBSUP;
+            string title = "Success";
+            string body = Constants.COMMAND_REFRESH_SUCCESSFUL;
+
             try
             {
                 Sitemap.ReloadData();
@@ -365,15 +368,14 @@ namespace DiscordBotLib
             }
             catch
             {
-                embed.WithColor(Color.Red);
-                embed.AddInlineField(Constants.EMOJI_FAIL, Constants.COMMAND_REFRESH_FAILED);
-                await context.Channel.SendMessageAsync(string.Empty, false, embed);
+                emoji = Constants.EMOJI_FAIL;
+                title = "Failed";
+                body = Constants.COMMAND_REFRESH_FAILED;
                 return;
             }
 
-            embed.WithColor(Helper.GetRandomColor());
-            embed.AddInlineField(Constants.EMOJI_THUMBSUP, Constants.COMMAND_REFRESH_SUCCESSFUL);
-            await context.Channel.SendMessageAsync(string.Empty, false, embed);
+            // Send response
+            await Helper.CreateEmbed(context, emoji, title, body, forceremoveoriginalmessage:true);
         }
 
         public static bool IsMod(SocketUser user)
