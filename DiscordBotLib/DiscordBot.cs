@@ -148,8 +148,8 @@ namespace DiscordBotLib
                 logger.Debug(""); // Blank line for seperation	
             }
 
-            // remove houndci-bot messages from #github channel
-            await Helper.HandleHoundCIMessages(message, context, channel);
+            // filter bot messages from infrastructure channels
+            await Helper.FilterBotMessages(message, context, channel);
 
             // process subscriptions
             await Helper.ProcessSubscriptions(message, context, channel);
@@ -229,7 +229,7 @@ namespace DiscordBotLib
 
                 // publish the URL link
                 string response = string.Format(HASTEBIN_MESSAGE, context.User.Mention, url);
-                await Helper.CreateEmbed(context, null, null, response);
+                await Helper.CreateEmbed(context, content:response, hidefooter:true);
 
                 //// Violation Management
                 //ViolationsManager.TheViolationsManager.AddIncident(context.User.Id, context.User.Username, CommonViolationTypes.Codewall.ToString(), context.Channel.Name);                

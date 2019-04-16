@@ -72,7 +72,7 @@ namespace DiscordBotLib
                 }
             }
 
-            string result = sb.ToString();
+            string result = string.Format("Deepsearch result:\n{0}", sb.ToString());
 
             if (result.Length > 1900) {
                 result = result.Substring(0, 1850);
@@ -81,6 +81,11 @@ namespace DiscordBotLib
 
             // Send a Direct Message to the User with search information
             var dmChannel = await Context.User.GetOrCreateDMChannelAsync();
+            if (result.Length == 0)
+            {
+                result = $"Deepsearch result: No results found for '{input}'";
+            }
+
             await dmChannel.SendMessageAsync(result);
         }
     }

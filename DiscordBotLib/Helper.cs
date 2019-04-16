@@ -68,28 +68,25 @@ namespace DiscordBotLib
             return Task.FromResult(0);
         }
 
-        public static async Task HandleHoundCIMessages(SocketUserMessage message,
+        public static async Task FilterBotMessages(SocketUserMessage message,
                                                        SocketCommandContext context,
                                                        SocketGuildChannel channel)
         {
+            // A list of channels to monitor
+            List<string> channelfilter = new List<string>() {"github", "circleci", "netlify" };
 
-            if (null == channel || channel.Name != "github" || message.Embeds.Count <= 0)
+            if (null == channel || !channelfilter.Contains(channel.Name) || message.Embeds.Count <= 0)
                 return;
 
-            bool purgeHoundBotMsgs = AppSettingsUtil.AppSettingsBool("deleteHoundBotMsgs",
-                                                                     false, false);
-            if (!purgeHoundBotMsgs)
-                return;
+            // A list of bots to monitor
+            List<string> botfilter = new List<string>() { "houndci-bot" };
 
-            // #github channel contains messages from many different sources. 
-            // check if the sender is 'houndci-bot' before deleting.
+            // check if the sender is a known bot before deleting.
             foreach (Embed e in message.Embeds)
             {
                 EmbedAuthor author = (EmbedAuthor)e.Author;
-                if (author.ToString() == "houndci-bot" || author.ToString() == "codecov" || author.ToString() == "github-actions")
+                if (!botfilter.Contains(author.ToString()) || author.ToString().EndsWith("[bot]"))
                 {
-                    //logger.InfoFormat("Deleting the houndci-bot message: {0} => {1}: {2}",
-                    //                   e.Url, e.Title, e.Description);
                     await context.Message.DeleteAsync();
                 }
             }
@@ -359,7 +356,10 @@ namespace DiscordBotLib
 
         public static async Task RefreshData(SocketCommandContext context)
         {
-            var embed = new EmbedBuilder();
+            string emoji = Constants.EMOJI_THUMBSUP;
+            string title = "Success";
+            string body = Constants.COMMAND_REFRESH_SUCCESSFUL;
+
             try
             {
                 Sitemap.ReloadData();
@@ -368,15 +368,13 @@ namespace DiscordBotLib
             }
             catch
             {
-                embed.WithColor(Color.Red);
-                embed.AddInlineField(Constants.EMOJI_FAIL, Constants.COMMAND_REFRESH_FAILED);
-                await context.Channel.SendMessageAsync(string.Empty, false, embed);
-                return;
+                emoji = Constants.EMOJI_FAIL;
+                title = "Failed";
+                body = Constants.COMMAND_REFRESH_FAILED;
             }
 
-            embed.WithColor(Helper.GetRandomColor());
-            embed.AddInlineField(Constants.EMOJI_THUMBSUP, Constants.COMMAND_REFRESH_SUCCESSFUL);
-            await context.Channel.SendMessageAsync(string.Empty, false, embed);
+            // Send response
+            await Helper.CreateEmbed(context, emoji, title, body, forceremoveoriginalmessage:true);
         }
 
         public static bool IsMod(SocketUser user)
@@ -458,12 +456,13 @@ namespace DiscordBotLib
         ///     Post a nice looking embeded post in as a response from the bot.
         /// </summary>
         /// <param name="context">The context of the message that triggered the bot to react.</param>
-        /// <param name="emoji">Emoji for the embedded post, this is inserted before the title. (Default: null)</param>
-        /// <param name="title">Title for the embedded post. (Default: null)</param>
-        /// <param name="content">Content(body) for the embedded post. (Default: null)</param>
-        /// <param name="inline">Special inline items of the embedded post. (Default: null)</param>
-        /// <param name="forceremoveoriginalmessage">Flag to indicate that the command post allways should be deleted, if false the logic in the DeleteMessage method aplies. (Default: false)</param>
-        public static async Task CreateEmbed(SocketCommandContext context, string emoji = null, string title = null, string content = null, List<Tuple<string, string>> inline = null, bool forceremoveoriginalmessage = false)
+        /// <param name="emoji">Emoji for the embedded post, this is inserted before the title.</param>
+        /// <param name="title">Title for the embedded post.</param>
+        /// <param name="content">Content(body) for the embedded post.</param>
+        /// <param name="inline">Special inline items of the embedded post.</param>
+        /// <param name="forceremoveoriginalmessage">Flag to indicate that the command post allways should be deleted, if false the logic in the DeleteMessage method aplies.</param>
+        /// <param name="hidefooter">Hide the footer in the embeded post.</param>
+        public static async Task CreateEmbed(SocketCommandContext context, string emoji = null, string title = null, string content = null, List<Tuple<string, string>> inline = null, bool forceremoveoriginalmessage = false, bool hidefooter = false)
         {
 
             var embed = new EmbedBuilder();
@@ -491,9 +490,11 @@ namespace DiscordBotLib
             }
 
             // Footer
-            // Add invoker
-            embed.WithFooter(footer => footer.Text = string.Format(
-                Constants.INVOKED_BY, context.User.Username));
+            if (!hidefooter)
+            {
+                embed.WithFooter(footer => footer.Text = string.Format(
+                    Constants.INVOKED_BY, context.Message.Content.Split(' ')[0], context.User.Username));
+            }
 
             // Remove original if needed
             if (!context.Channel.Name.StartsWith("@"))

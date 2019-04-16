@@ -65,8 +65,6 @@
     <add key="subscriptionsFile" value="C:\Kalavala\HassBot\Output\subscriptions.json" />
     <add key="violationsFile" value="C:\Kalavala\HassBot\Output\violations.json" />
     
-    <add key="deleteHoundBotMsgs" value="true" />
-    
     <add key="discordServerName" value="Home Assistant" />
     <add key="mods" value="skalavala, arsaboo, Tinkerer, Vasiley, dale3h, baloob, infamy, quadflight, bachya, phnx, cogneato, iantrich, Ludeeus, hunterjm, Frenck" />
 
