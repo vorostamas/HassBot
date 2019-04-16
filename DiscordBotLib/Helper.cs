@@ -85,7 +85,7 @@ namespace DiscordBotLib
             foreach (Embed e in message.Embeds)
             {
                 EmbedAuthor author = (EmbedAuthor)e.Author;
-                if (!botfilter.Contains(author.ToString()) || author.ToString().EndsWith("[bot]"))
+                if (botfilter.Contains(author.ToString()) || author.ToString().EndsWith("[bot]"))
                 {
                     await context.Message.DeleteAsync();
                 }
