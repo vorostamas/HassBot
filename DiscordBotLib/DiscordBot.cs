@@ -148,8 +148,8 @@ namespace DiscordBotLib
                 logger.Debug(""); // Blank line for seperation	
             }
 
-            // remove houndci-bot messages from #github channel
-            await Helper.HandleHoundCIMessages(message, context, channel);
+            // filter bot messages from infrastructure channels
+            await Helper.FilterBotMessages(message, context, channel);
 
             // process subscriptions
             await Helper.ProcessSubscriptions(message, context, channel);

@@ -68,28 +68,26 @@ namespace DiscordBotLib
             return Task.FromResult(0);
         }
 
-        public static async Task HandleHoundCIMessages(SocketUserMessage message,
+        public static async Task FilterBotMessages(SocketUserMessage message,
                                                        SocketCommandContext context,
                                                        SocketGuildChannel channel)
         {
+            // A list of channels to monitor
+            List<string> channelfilter = new List<string>() {"github", "circleci", "netlify" };
 
-            if (null == channel || channel.Name != "github" || message.Embeds.Count <= 0)
+            if (null == channel || !channelfilter.Contains(channel.Name) || message.Embeds.Count <= 0)
                 return;
 
-            bool purgeHoundBotMsgs = AppSettingsUtil.AppSettingsBool("deleteHoundBotMsgs",
-                                                                     false, false);
-            if (!purgeHoundBotMsgs)
-                return;
+            // A list of bots to monitor
+            List<string> botfilter = new List<string>() { "houndci-bot", "github-actions" };
 
-            // #github channel contains messages from many different sources. 
-            // check if the sender is 'houndci-bot' before deleting.
+            // check if the sender is a known bot before deleting.
+
             foreach (Embed e in message.Embeds)
             {
                 EmbedAuthor author = (EmbedAuthor)e.Author;
-                if (author.ToString() == "houndci-bot" || author.ToString() == "codecov" || author.ToString() == "github-actions")
+                if (!botfilter.Contains(author.ToString()) || author.ToString().EndsWith("[bot]"))
                 {
-                    //logger.InfoFormat("Deleting the houndci-bot message: {0} => {1}: {2}",
-                    //                   e.Url, e.Title, e.Description);
                     await context.Message.DeleteAsync();
                 }
             }
