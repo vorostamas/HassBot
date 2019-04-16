@@ -82,7 +82,6 @@ namespace DiscordBotLib
             List<string> botfilter = new List<string>() { "houndci-bot", "github-actions" };
 
             // check if the sender is a known bot before deleting.
-
             foreach (Embed e in message.Embeds)
             {
                 EmbedAuthor author = (EmbedAuthor)e.Author;
