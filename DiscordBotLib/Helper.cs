@@ -458,12 +458,13 @@ namespace DiscordBotLib
         ///     Post a nice looking embeded post in as a response from the bot.
         /// </summary>
         /// <param name="context">The context of the message that triggered the bot to react.</param>
-        /// <param name="emoji">Emoji for the embedded post, this is inserted before the title. (Default: null)</param>
-        /// <param name="title">Title for the embedded post. (Default: null)</param>
-        /// <param name="content">Content(body) for the embedded post. (Default: null)</param>
-        /// <param name="inline">Special inline items of the embedded post. (Default: null)</param>
-        /// <param name="forceremoveoriginalmessage">Flag to indicate that the command post allways should be deleted, if false the logic in the DeleteMessage method aplies. (Default: false)</param>
-        public static async Task CreateEmbed(SocketCommandContext context, string emoji = null, string title = null, string content = null, List<Tuple<string, string>> inline = null, bool forceremoveoriginalmessage = false)
+        /// <param name="emoji">Emoji for the embedded post, this is inserted before the title.</param>
+        /// <param name="title">Title for the embedded post.</param>
+        /// <param name="content">Content(body) for the embedded post.</param>
+        /// <param name="inline">Special inline items of the embedded post.</param>
+        /// <param name="forceremoveoriginalmessage">Flag to indicate that the command post allways should be deleted, if false the logic in the DeleteMessage method aplies.</param>
+        /// <param name="hidefooter">Hide the footer in the embeded post.</param>
+        public static async Task CreateEmbed(SocketCommandContext context, string emoji = null, string title = null, string content = null, List<Tuple<string, string>> inline = null, bool forceremoveoriginalmessage = false, bool hidefooter = false)
         {
 
             var embed = new EmbedBuilder();
@@ -491,8 +492,11 @@ namespace DiscordBotLib
             }
 
             // Footer
-            embed.WithFooter(footer => footer.Text = string.Format(
-                Constants.INVOKED_BY, context.Message.Content.Split(' ')[0], context.User.Username));
+            if (!hidefooter)
+            {
+                embed.WithFooter(footer => footer.Text = string.Format(
+                    Constants.INVOKED_BY, context.Message.Content.Split(' ')[0], context.User.Username));
+            }
 
             // Remove original if needed
             if (!context.Channel.Name.StartsWith("@"))
