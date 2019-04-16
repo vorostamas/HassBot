@@ -229,7 +229,7 @@ namespace DiscordBotLib
 
                 // publish the URL link
                 string response = string.Format(HASTEBIN_MESSAGE, context.User.Mention, url);
-                await Helper.CreateEmbed(context, null, null, response);
+                await Helper.CreateEmbed(context, content:response, hidefooter:true);
 
                 //// Violation Management
                 //ViolationsManager.TheViolationsManager.AddIncident(context.User.Id, context.User.Username, CommonViolationTypes.Codewall.ToString(), context.Channel.Name);                
