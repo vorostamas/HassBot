@@ -371,7 +371,6 @@ namespace DiscordBotLib
                 emoji = Constants.EMOJI_FAIL;
                 title = "Failed";
                 body = Constants.COMMAND_REFRESH_FAILED;
-                return;
             }
 
             // Send response
