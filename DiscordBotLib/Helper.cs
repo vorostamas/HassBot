@@ -491,9 +491,8 @@ namespace DiscordBotLib
             }
 
             // Footer
-            // Add invoker
             embed.WithFooter(footer => footer.Text = string.Format(
-                Constants.INVOKED_BY, context.User.Username));
+                Constants.INVOKED_BY, context.Message.Content.Split(' ')[0], context.User.Username));
 
             // Remove original if needed
             if (!context.Channel.Name.StartsWith("@"))
