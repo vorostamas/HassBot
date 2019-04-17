@@ -107,9 +107,9 @@
         public static readonly string WELCOME_TITLE =
                 "Welcome";
         public static readonly string WELCOME_MESSAGE =
-                "Welcome to {0} Discord Channel!";
+                "Welcome to the {0} Discord Server!";
         public static readonly string WELCOME_RULES_MESSAGE =
-                "Please read {0} \n";
+                "{0} Please read <#{1}>\n\n";
         public static readonly string CODE_SHARING_MESSAGE =
                 "For sharing code, please use <https://www.hastebin.com>\nIf it is less than 10 lines of code, **make sure** it is formatted using below format:\n\\`\\`\\`yaml\ncode\n\\`\\`\\`\n";
         public static readonly string FORMAT_CODE =

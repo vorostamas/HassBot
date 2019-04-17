@@ -25,26 +25,25 @@ namespace DiscordBotLib
         }
 
         private async Task WelcomeCommand() {
-            StringBuilder sb = new StringBuilder();
 
-            string serverName = AppSettingsUtil.AppSettingsString("discordServerName", true, string.Empty); 
-            string welcomerulesChannel = AppSettingsUtil.AppSettingsString("welcomerulesChannel", false, string.Empty);
+            string serverName = AppSettingsUtil.AppSettingsString(
+                "discordServerName", true, string.Empty);
+            string welcomerulesChannel = AppSettingsUtil.AppSettingsString(
+                "welcomerulesChannel", false, string.Empty);
 
-            sb.Append(string.Format(Constants.WELCOME_MESSAGE, serverName));
-
-            if (string.Empty != welcomerulesChannel) {
-                sb.Append(string.Format(Constants.WELCOME_RULES_MESSAGE, "<#" + welcomerulesChannel + ">" ));
-            }
-            sb.Append(Constants.CODE_SHARING_MESSAGE);
+            string emoji = Constants.EMOJI_NAMASTE;
+            string title = string.Format(Constants.WELCOME_MESSAGE, serverName);
 
             // mentioned users
             string mentionedUsers = base.MentionedUsers();
-            var embed = new EmbedBuilder();
-            embed.WithTitle(Constants.EMOJI_NAMASTE);
-            embed.WithColor(Color.DarkRed);
-            embed.AddInlineField(Constants.WELCOME_TITLE, 
-                                 mentionedUsers + sb.ToString());
-            await ReplyAsync(string.Empty, false, embed);
+
+            string content = string.Format(Constants.WELCOME_RULES_MESSAGE,
+                mentionedUsers, welcomerulesChannel);
+            content += Constants.CODE_SHARING_MESSAGE;
+
+            // Send response
+            await Helper.CreateEmbed(
+                Context, emoji, title, content);
         }
     }
 }
