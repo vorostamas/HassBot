@@ -39,7 +39,17 @@ namespace DiscordBotLib
 
             sb.Append("A few more **important things** to remember:\n\n");
             sb.Append("1. A maximum of 10-15 lines of code can be posted. For code that is more than 15 lines, please use https://paste.ubuntu.com\n");
-            sb.Append("2. Please make sure you format the code when pasting. Use markdown language when pasting code.\n");
+            sb.Append("2. Please make sure you format the code when pasting. Use markdown language when pasting code.\n\n");
+            
+            sb.Append("Here are a few other Discord servers you can join:\n");
+            sb.Append("https://discord.gg/25ZTXDv"); //Community hassio-addons
+            sb.Append("\n");
+            sb.Append("https://discord.gg/TjUGRG4"); //Tasmota
+            sb.Append("\n");
+            sb.Append("https://discord.gg/DdEp6Ph"); //ESPHome
+            sb.Append("\n");
+            sb.Append("https://discord.gg/Mx5qafB"); //AppDaemon
+            sb.Append("\n");
 
             sb.Append(string.Format("Once again, Welcome to the {0} Channel!\n\n", user.Guild.Name));
         }
