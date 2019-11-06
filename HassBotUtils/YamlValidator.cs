@@ -22,6 +22,7 @@ namespace HassBotUtils
                 yamlData = yamlData.Replace("!include_dir_named ", string.Empty);
                 yamlData = yamlData.Replace("!include_dir_merge_list ", string.Empty);
                 yamlData = yamlData.Replace("!include_dir_merge_named ", string.Empty);
+                yamlData = yamlData.Replace("...", string.Empty);
 
                 errorMessage = string.Empty;
                 var input = new StringReader(yamlData);
