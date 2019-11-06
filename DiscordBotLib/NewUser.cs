@@ -43,9 +43,13 @@ namespace DiscordBotLib
             
             sb.Append("Here are a few other Discord servers you can join:\n");
             sb.Append("https://discord.gg/25ZTXDv"); //Community hassio-addons
+            sb.Append("\n");
             sb.Append("https://discord.gg/TjUGRG4"); //Tasmota
+            sb.Append("\n");
             sb.Append("https://discord.gg/DdEp6Ph"); //ESPHome
+            sb.Append("\n");
             sb.Append("https://discord.gg/Mx5qafB"); //AppDaemon
+            sb.Append("\n");
 
             sb.Append(string.Format("Once again, Welcome to the {0} Channel!\n\n", user.Guild.Name));
         }
