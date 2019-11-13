@@ -41,7 +41,7 @@ namespace DiscordBotLib
             // Create the message
             body = $"Here {mentionedUsers}, try this:";
             body += "\n"; // New line
-            body += $"<http://lmgtfy.com/?q={encoded}>";
+            body += $"<http://letmegooglethat.com/?q={encoded}>";
 
             // Send response
             await Helper.CreateEmbed(Context, emoji, title, body, null, true);
