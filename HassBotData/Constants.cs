@@ -14,5 +14,7 @@
                 "Error downloading {0} file.";
         public static readonly string ERR_BLOCKED_DOMAINS_FILE =
                 "Failed to load blocked_domains.json file";
+        public static readonly string ERR_WELCOME_MSG_FILE =
+                "Failed to load welcome.txt file";
     }
 }

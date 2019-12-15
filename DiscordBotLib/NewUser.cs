@@ -4,12 +4,12 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using HassBotData;
 
 namespace DiscordBotLib
 {
     public class NewUser
     {
-
         private static readonly string FUNFACT_URL =
             "http://api.icndb.com/jokes/random?firstName={0}&lastName=&limitTo=[nerdy]";
 
@@ -18,40 +18,30 @@ namespace DiscordBotLib
 
         public static async Task NewUserJoined(SocketGuildUser user)
         {
-            StringBuilder sb = new StringBuilder();
+            string message = GetWelcomeMessage(user);
 
-            GetWelcomeMessage(sb, user);
-
-            // Send a Direct Message to the new Users with instructions
+            // Send a Direct Message to the new user with instructions
             var dmChannel = await user.GetOrCreateDMChannelAsync();
-            await dmChannel.SendMessageAsync(sb.ToString());
+            await dmChannel.SendMessageAsync(message);
         }
 
-        private static void GetWelcomeMessage(StringBuilder sb, SocketGuildUser user)
+        private static string GetWelcomeMessage(SocketGuildUser user)
         {
+            StringBuilder sb = new StringBuilder(512);
+
             sb.Append($"Hello, {user.Mention}! Welcome to Home Assistant Discord Channel.\n\n");
-            sb.Append("These are the rules you **MUST** follow in order to get support from the members.\n\n");
-
-            sb.Append("Feel free to introduce yourself, as we are all friends here.\n");
-            sb.Append("Do not insult, belittle, or abuse your fellow community members. Any reports of abuse will not be taken lightly and will lead to a ban.\n");
-            sb.Append("Head over to #botspam channel and run the command `~help` to get started.\n\n");
-            sb.Append("We hope you enjoy the company of many talented individuals here!\n\n");
-
-            sb.Append("A few more **important things** to remember:\n\n");
-            sb.Append("1. A maximum of 10-15 lines of code can be posted. For code that is more than 15 lines, please use https://paste.ubuntu.com\n");
-            sb.Append("2. Please make sure you format the code when pasting. Use markdown language when pasting code.\n\n");
-            
-            sb.Append("Here are a few other Discord servers you can join:\n");
-            sb.Append("https://discord.gg/25ZTXDv"); //Community hassio-addons
-            sb.Append("\n");
-            sb.Append("https://discord.gg/TjUGRG4"); //Tasmota
-            sb.Append("\n");
-            sb.Append("https://discord.gg/DdEp6Ph"); //ESPHome
-            sb.Append("\n");
-            sb.Append("https://discord.gg/Mx5qafB"); //AppDaemon
-            sb.Append("\n");
-
+            string welcomeData = WelcomeMessage.Instance.Message;
+            string[] lines = welcomeData.Split('\n');
+            foreach ( string line in lines )
+            {
+                if (line.StartsWith("//"))
+                    continue;
+                sb.Append(line);
+                sb.Append("\n");
+            }
             sb.Append(string.Format("Once again, Welcome to the {0} Channel!\n\n", user.Guild.Name));
+
+            return sb.ToString();
         }
 
         private static string GetRandomFunFact(string userHandle)

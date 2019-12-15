@@ -8,6 +8,20 @@ namespace HassBotData
 {
     public class Persistence
     {
+        public static string LoadWelcomeMessage()
+        {
+            string remoteurl = AppSettingsUtil.AppSettingsString("WelcomeMsgUrl", true, string.Empty);
+            string localPath = AppSettingsUtil.AppSettingsString("WelcomeMsgLocalPath", true, string.Empty);
+
+            Helper.DownloadFile(remoteurl, localPath);
+
+            if (!File.Exists(localPath))
+                return null;
+
+            string data = File.ReadAllText(localPath);
+            return data;
+        }
+
         public static List<CommandDTO> LoadCommands()
         {
             string remoteurl = AppSettingsUtil.AppSettingsString("CommandsUrl", true, string.Empty);

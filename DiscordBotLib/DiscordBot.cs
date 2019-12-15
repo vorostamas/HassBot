@@ -6,8 +6,6 @@ using HassBotDTOs;
 using HassBotUtils;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
@@ -22,7 +20,7 @@ namespace DiscordBotLib
         private static readonly char PREFIX_2 = '.';
         private static readonly string POOP = "💩";
         private static readonly string HASTEBIN_MESSAGE =
-            "{0} posted a message that is too long, it is moved here --> {1}";
+            "{0} posted a code wall, it is moved here --> {1}";
 
         private static readonly log4net.ILog logger =
              log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);

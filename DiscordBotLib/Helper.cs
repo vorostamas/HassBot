@@ -363,6 +363,7 @@ namespace DiscordBotLib
             try
             {
                 Sitemap.ReloadData();
+                WelcomeMessage.ReloadData();
                 BlockedDomains.ReloadData();
                 HassBotCommands.ReloadData();
             }

@@ -19,19 +19,12 @@ namespace HassBotUtils
         private static readonly string HASTEBIN_POSTURL = "https://hastebin.com/documents";
         private static readonly string HASTEBIN_RETURN = "https://hastebin.com/{0}";
 
-        private static readonly string ERR_JSON2YAML = "Hmm... that doesn't look like a valie JSON. Unable to convert to YAML!";
-        private static readonly string ERR_YAML2JSON = "Hmm... that doesn't look like a valie YAML. Unable to convert to JSON!";
+        private static readonly string ERR_JSON2YAML = "Hmm... that doesn't look like a valid JSON. Unable to convert to YAML!";
+        private static readonly string ERR_YAML2JSON = "Hmm... that doesn't look like a valid YAML. Unable to convert to JSON!";
 
         private static readonly Random _random = new Random();
         private static readonly log4net.ILog logger =
                     log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        public static string GetFlippinAdjective()
-        {
-            string[] adjectives = new string[] { "insensitive", "heartless", "inconsiderate", "thoughtless", "thick-skinned", "hard-hearted", "cold-bloded", "uncaring", "mean-spirited", "unconcerned", "unsympathetic", "unkind", "callous", "cruel", "merciless", "pitiless" };
-            int index = _random.Next(adjectives.Length);
-            return adjectives[index];
-        }
 
         public static bool LineCountCheckPassed(string message)
         {
@@ -79,7 +72,6 @@ namespace HassBotUtils
             }
             catch (Exception e)
             {
-                logger.Error(e.ToString());
                 return ERR_YAML2JSON;
             }
         }
@@ -101,7 +93,6 @@ namespace HassBotUtils
             }
             catch (Exception e)
             {
-                logger.Error(e);
                 return ERR_JSON2YAML;
             }
         }
