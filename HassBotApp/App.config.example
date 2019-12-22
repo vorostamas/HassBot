@@ -3,7 +3,7 @@
   <configSections>
     <section name="log4net" type="log4net.Config.Log4NetConfigurationSectionHandler, log4net" />
   </configSections>
-  <startup> 
+  <startup>
     <supportedRuntime version="v4.0" sku=".NETFramework,Version=v4.6.1" />
   </startup>
   <runtime>
@@ -49,12 +49,15 @@
       <appender-ref ref="Console" />
       <appender-ref ref="LogFileAppender" />
     </root>
-  </log4net>  
+  </log4net>
   <appSettings>
+    <add key="development" value="false" />
     <add key="maxLinesLimit" value="15" />
-    <add key="token" value="" />
+    <add key="token" value="The Discord Server Token Goes Here!" />
     <add key="sitemapUrl" value="https://home-assistant.io/sitemap.xml" />
-    
+
+    <add key="WelcomeMsgUrl" value="https://raw.githubusercontent.com/awesome-automations/hassbot-data/master/welcome.txt" />
+    <add key="WelcomeMsgLocalPath" value="C:\Kalavala\HassBot\Output\welcome.txt" />
     <add key="CommandsUrl" value="https://raw.githubusercontent.com/awesome-automations/hassbot-data/master/commands.json" />
     <add key="CommandsLocalPath" value="C:\Kalavala\HassBot\Output\commands.json" />
     <add key="BlockedDomainsUrl" value="https://raw.githubusercontent.com/awesome-automations/hassbot-data/master/blocked_domains.json" />
@@ -64,7 +67,9 @@
     <add key="afkUsersFile" value="C:\Kalavala\HassBot\Output\away.json" />
     <add key="subscriptionsFile" value="C:\Kalavala\HassBot\Output\subscriptions.json" />
     <add key="violationsFile" value="C:\Kalavala\HassBot\Output\violations.json" />
-    
+
+    <add key="deleteHoundBotMsgs" value="true" />
+
     <add key="discordServerName" value="Home Assistant" />
     <add key="mods" value="skalavala, arsaboo, Tinkerer, Vasiley, dale3h, baloob, infamy, quadflight, bachya, phnx, cogneato, iantrich, Ludeeus, hunterjm, Frenck" />
 
