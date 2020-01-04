@@ -36,7 +36,6 @@ namespace DiscordBotLib
             if (string.IsNullOrEmpty(topic))
             {
                 topic = "No topic is set for this channel.";
-                await Helper.CreateEmbed(Context, title: "The topic of this channel is", content: topic);
             }
 
             // Send response
