@@ -132,6 +132,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="8BallModule.cs" />
+    <Compile Include="Topic.cs" />
     <Compile Include="AboutModule.cs" />
     <Compile Include="AFKModule.cs" />
     <Compile Include="AsModule.cs" />
