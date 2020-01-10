@@ -208,7 +208,7 @@ namespace DiscordBotLib
                 string url = await HassBotUtils.Utils.Paste2Ubuntu(message.Content, context.User.Username);
                 if (url == string.Empty)
                 {
-                    // untutu paste failed... try hastebin
+                    // ubuntu paste failed... try hastebin
                     url = HassBotUtils.Utils.Paste2HasteBin(message.Content);
                     if (url == string.Empty)
                     {
@@ -248,62 +248,62 @@ namespace DiscordBotLib
             }
         }
 
-        private static async Task KickWarningMessage(SocketCommandContext context)
-        {
-            var dmChannel = await context.User.GetOrCreateDMChannelAsync();
-            StringBuilder sb = new StringBuilder();
-            sb.Append("\n\nHello there!");
-            sb.Append("\n");
-            sb.Append("You are on the verge of getting kicked out of the server for not following the rules. You've been issued 3 warnings already, and you only have 2 left.");
-            sb.Append("\n");
-            sb.Append("You have repeatedly violated the rules that we all take very seriously. Please pay attention to the rules!");
-            sb.Append("\n");
-            sb.Append("Please reach out to any of the mods to get you off of the naughtly list. If these violations continue, you will be kicked out of the server.");
-            sb.Append("\n");
-            sb.Append("Thank you!\n");
+        //private static async Task KickWarningMessage(SocketCommandContext context)
+        //{
+        //    var dmChannel = await context.User.GetOrCreateDMChannelAsync();
+        //    StringBuilder sb = new StringBuilder();
+        //    sb.Append("\n\nHello there!");
+        //    sb.Append("\n");
+        //    sb.Append("You are on the verge of getting kicked out of the server for not following the rules. You've been issued 3 warnings already, and you only have 2 left.");
+        //    sb.Append("\n");
+        //    sb.Append("You have repeatedly violated the rules that we all take very seriously. Please pay attention to the rules!");
+        //    sb.Append("\n");
+        //    sb.Append("Please reach out to any of the mods to get you off of the naughtly list. If these violations continue, you will be kicked out of the server.");
+        //    sb.Append("\n");
+        //    sb.Append("Thank you!\n");
 
-            await dmChannel.SendMessageAsync(sb.ToString());
+        //    await dmChannel.SendMessageAsync(sb.ToString());
 
-            // send a message to #botspam channel as well
-            await HAChannels.ModLogChannel(context).SendMessageAsync("User " + context.User.Mention + " was given a warning for violating rules for 3 consecutive times!", false, null);
-        }
+        //    // send a message to #botspam channel as well
+        //    await HAChannels.ModLogChannel(context).SendMessageAsync("User " + context.User.Mention + " was given a warning for violating rules for 3 consecutive times!", false, null);
+        //}
 
-        private static async Task KickMessage(SocketUserMessage message, SocketCommandContext context)
-        {
-            // Send a Direct Message to the User
-            var dmChannel = await context.User.GetOrCreateDMChannelAsync();
-            StringBuilder sb = new StringBuilder();
+        //private static async Task KickMessage(SocketUserMessage message, SocketCommandContext context)
+        //{
+        //    // Send a Direct Message to the User
+        //    var dmChannel = await context.User.GetOrCreateDMChannelAsync();
+        //    StringBuilder sb = new StringBuilder();
 
-            sb.Append("\n\nHello, there!");
-            sb.Append("\n\n");
-            sb.Append("We got a bit of a problem here. We have some ground rules that we **really** like you to follow.");
-            sb.Append("\n");
-            sb.Append("Please make sure you pay **EXTRA** attention to the welcome notes and read descriptions of each channel carefully.");
-            sb.Append("\n\n");
-            sb.Append("You got kicked out of the Discord server for posting code that is more than 15 lines **FOR MORE THAN 5 TIMES**.");
-            sb.Append("\n\n");
-            sb.Append("We would love to work with you to help you provide the support you need. For that, we all have to follow the rules and keep it civil.");
-            sb.Append("\n");
-            sb.Append("Once you had the chance to read and understood the rules, you can simply log back and meet with the awesome community.");
-            sb.Append("\n");
-            sb.Append("To join the server, click on the link again");
-            sb.Append("\n");
-            sb.Append("https://discord.gg/c5DvZ4e");
-            sb.Append("\n\n");
-            sb.Append("Thank you, and hope to see you again!\n");
+        //    sb.Append("\n\nHello, there!");
+        //    sb.Append("\n\n");
+        //    sb.Append("We got a bit of a problem here. We have some ground rules that we **really** like you to follow.");
+        //    sb.Append("\n");
+        //    sb.Append("Please make sure you pay **EXTRA** attention to the welcome notes and read descriptions of each channel carefully.");
+        //    sb.Append("\n\n");
+        //    sb.Append("You got kicked out of the Discord server for posting code that is more than 15 lines **FOR MORE THAN 5 TIMES**.");
+        //    sb.Append("\n\n");
+        //    sb.Append("We would love to work with you to help you provide the support you need. For that, we all have to follow the rules and keep it civil.");
+        //    sb.Append("\n");
+        //    sb.Append("Once you had the chance to read and understood the rules, you can simply log back and meet with the awesome community.");
+        //    sb.Append("\n");
+        //    sb.Append("To join the server, click on the link again");
+        //    sb.Append("\n");
+        //    sb.Append("https://discord.gg/c5DvZ4e");
+        //    sb.Append("\n\n");
+        //    sb.Append("Thank you, and hope to see you again!\n");
 
-            await dmChannel.SendMessageAsync(sb.ToString());
+        //    await dmChannel.SendMessageAsync(sb.ToString());
 
-            // kick the user
-            await ((SocketGuildUser)message.Author).KickAsync("Posted code walls for more than 5 times.", null);
-            await message.Channel.SendMessageAsync("User " + context.User.Mention + " got kicked out because of posting too many codewalls!");
+        //    // kick the user
+        //    await ((SocketGuildUser)message.Author).KickAsync("Posted code walls for more than 5 times.", null);
+        //    await message.Channel.SendMessageAsync("User " + context.User.Mention + " got kicked out because of posting too many codewalls!");
 
-            // send a message to #botspam channel as well
-            await HAChannels.ModLogChannel(context).SendMessageAsync("User " + context.User.Mention + " got kicked out for violating rules for more than 5 times!", false, null);
+        //    // send a message to #botspam channel as well
+        //    await HAChannels.ModLogChannel(context).SendMessageAsync("User " + context.User.Mention + " got kicked out for violating rules for more than 5 times!", false, null);
 
-            // finally clear the violations, so that the user can start fresh
-            ViolationsManager.TheViolationsManager.ClearViolationsForUser(context.User.Id);
-        }
+        //    // finally clear the violations, so that the user can start fresh
+        //    ViolationsManager.TheViolationsManager.ClearViolationsForUser(context.User.Id);
+        //}
 
         private static bool IsMod(string user)
         {

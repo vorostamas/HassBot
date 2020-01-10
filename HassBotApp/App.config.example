@@ -52,7 +52,7 @@
   </log4net>
   <appSettings>
     <add key="development" value="false" />
-    <add key="maxLinesLimit" value="15" />
+    <add key="maxLinesLimit" value="10" />
     <add key="token" value="The Discord Server Token Goes Here!" />
     <add key="sitemapUrl" value="https://home-assistant.io/sitemap.xml" />
 
