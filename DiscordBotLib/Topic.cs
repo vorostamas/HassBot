@@ -20,6 +20,12 @@ namespace DiscordBotLib
         }
 
         [Command("topic")]
+        public async Task TopicCommand([Remainder]string cmd)
+        {
+            await TopicCommand();
+        }
+
+        [Command("topic")]
         public async Task TopicCommand()
         {
             var channel = Context.Client.GetChannel(Context.Channel.Id) as Discord.WebSocket.SocketTextChannel;
@@ -32,7 +38,7 @@ namespace DiscordBotLib
             }
 
             // Send response
-            await Helper.CreateEmbed(Context, title: "The topic of this channel is: ", content: topic);
+            await CreateEmbed(Context, title: "The topic of this channel is: ", content: topic);
         }
     }
 }

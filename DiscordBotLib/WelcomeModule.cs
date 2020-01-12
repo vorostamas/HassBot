@@ -67,6 +67,7 @@ namespace DiscordBotLib
 
             string content = string.Format(Constants.WELCOME_RULES_MESSAGE,
                 mentionedUsers, welcomerulesChannel);
+
             content += Constants.CODE_SHARING_MESSAGE;
 
             // Send response

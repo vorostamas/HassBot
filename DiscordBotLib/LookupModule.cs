@@ -42,9 +42,6 @@ namespace DiscordBotLib
             string result = Helper.SitemapLookup(input);
             result = result.Trim();
 
-            // mention users if any
-            string mentionedUsers = base.MentionedUsers();
-
             var embed = new EmbedBuilder();
             if (result == string.Empty) {
                 emoji = ":frowning:";
@@ -58,7 +55,7 @@ namespace DiscordBotLib
             }
 
             // Send response
-            await Helper.CreateEmbed(Context, emoji, title, body, null, true);
+            await CreateEmbed(Context, emoji, title, body, null, true);
         }
 
         [Command("deepsearch")]

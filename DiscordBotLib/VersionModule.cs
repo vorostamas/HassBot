@@ -58,13 +58,8 @@ namespace DiscordBotLib
                 inline.Add(new Tuple<string, string>("Beta", ha.Beta));
             }
 
-            // mention users if any
-            string mentionedUsers = base.MentionedUsers();
-            if (string.Empty != mentionedUsers)
-                body = string.Format("FYI {0} \n", mentionedUsers) + body;
-
             // Send response
-            await Helper.CreateEmbed(Context, emoji, title, body, inline, true);
+            await CreateEmbed(Context, emoji, title, body, inline, true);
         }
 
         private async Task GetHASSIOVersion() {
@@ -88,13 +83,8 @@ namespace DiscordBotLib
                 inline.Add(new Tuple<string, string>("Beta Home Assistant", beta.HomeAssistant));
             }
 
-            // mention users if any
-            string mentionedUsers = base.MentionedUsers();
-            if (string.Empty != mentionedUsers)
-                body = string.Format("FYI {0} \n", mentionedUsers) + body;
-
             // Send response
-            await Helper.CreateEmbed(Context, emoji, title, body, inline, true);
+            await CreateEmbed(Context, emoji, title, body, inline, true);
         }
 
         public static HassIOVersion GetHassIOVersion(HassioRelease release) {

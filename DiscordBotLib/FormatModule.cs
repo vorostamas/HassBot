@@ -25,12 +25,6 @@ namespace DiscordBotLib
             string title = null;
             string body = null;
 
-            // mention users if any
-            string mentionedUsers = base.MentionedUsers();
-
-            if (mentionedUsers.Trim() != string.Empty )
-                body += mentionedUsers + " ";
-
             body += "To format your text as code, enter three backticks on the first line, press Enter for a new line, paste your code, press Enter again for another new line, and lastly three more backticks. Here's an example:\n\n";
             body += "\\`\\`\\`\n";
             body += "code here\n";
@@ -39,7 +33,7 @@ namespace DiscordBotLib
             body += "**DO NOT** repeat posts. Please edit previously posted message, here is how -> <https://bit.ly/2qOOf1G>";
 
             // Send response
-            await Helper.CreateEmbed(Context, emoji, title, body, null, true);
+            await CreateEmbed(Context, emoji, title, body, null, true);
         }
     }
 }

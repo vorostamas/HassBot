@@ -1,4 +1,6 @@
 ﻿using Discord.Commands;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace DiscordBotLib
@@ -36,6 +38,22 @@ namespace DiscordBotLib
                 Constants.USAGE_TITLE,
                 usageString
                 );
+        }
+
+        protected async Task CreateEmbed(SocketCommandContext context, 
+                                         string emoji = null, string title = null, 
+                                         string content = null, List<Tuple<string, string>> inline = null, 
+                                         bool forceremoveoriginalmessage = false, bool hidefooter = false)
+        {
+            if (string.IsNullOrEmpty(content))
+                return;
+
+            // mention users if any
+            string mentionedUsers = MentionedUsers();
+            if (!string.IsNullOrEmpty(mentionedUsers))
+                content = string.Format("{0} ", mentionedUsers) + content;
+
+            await Helper.CreateEmbed(context, emoji, title, content, inline, forceremoveoriginalmessage, false);
         }
     }
 }
