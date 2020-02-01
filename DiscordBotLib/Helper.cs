@@ -441,16 +441,15 @@ namespace DiscordBotLib
 
                 if (leftovercontent.Length != 0)
                 {
-                    logger.Debug("Message had extra content, skipping delete.");
+                    // logger.Debug("Message had extra content, skipping delete.");
                 }
                 else
                 {
-                    logger.Debug("Deleting command message " +
-                        context.Message + " from " + context.User.Username + " in " + context.Channel.Name);
+                    logger.Debug(context.User.Username + " invoked command " + context.Message + " in " + context.Channel.Name);
+
                     await context.Message.DeleteAsync();
                 }
             }
-
         }
 
         /// <summary>

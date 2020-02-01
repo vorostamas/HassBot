@@ -48,7 +48,7 @@ namespace DiscordBotLib
             if (string.IsNullOrEmpty(content))
                 return;
 
-            // mention users if any
+            // mention users if any - Note that the MENTIONS ONLY WORK IN THE BODY, AND NOT IN TITLE.
             string mentionedUsers = MentionedUsers();
             if (!string.IsNullOrEmpty(mentionedUsers))
                 content = string.Format("{0} ", mentionedUsers) + content;
