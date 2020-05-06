@@ -46,6 +46,11 @@ namespace DiscordBotLib
 
         public static Task LogMessage(LogMessage message)
         {
+            if (message.Exception is CommandException cmdEx)
+            {
+                logger.Error($"{cmdEx.GetBaseException().GetType()} was thrown while executing {cmdEx.Command.Aliases.First()} in {cmdEx.Context.Channel} by {cmdEx.Context.User}.");
+            }
+
             switch (message.Severity)
             {
                 case LogSeverity.Critical:
@@ -65,7 +70,7 @@ namespace DiscordBotLib
                     logger.Debug(message.Message);
                     break;
             }
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
 
         public static async Task FilterBotMessages(SocketUserMessage message,

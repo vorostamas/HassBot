@@ -86,22 +86,22 @@ namespace DiscordBotLib
         private async Task RegisterCommandsAsync()
         {
             _client.Log += Helper.LogMessage;
-            _commands.Log += Helper.LogMessage;
+            //_commands.Log += Helper.LogMessage;
             _client.UserJoined += NewUser.NewUserJoined;
             _client.MessageReceived += HandleCommandAsync;
             _client.Disconnected += _client_Disconnected;
 
             Assembly libAssembly = Assembly.Load("DiscordBotLib");
-            await _commands.AddModulesAsync(libAssembly);
+            await _commands.AddModulesAsync(libAssembly, _services);
         }
 
         private async Task _client_Disconnected(Exception arg)
         {
             siteMapRefreshTimer.Enabled = false;
-            logger.Warn("The @HassBot was disconnected... will try to connect in 5 seconds.");
+            // logger.Warn("The @HassBot was disconnected... will try to connect in 5 seconds.");
 
             // wait for 5 seconds
-            await Task.Delay(5000);
+            await Task.Delay(2000);
 
             // start all over again!
             await StartInternal();

@@ -9,6 +9,12 @@
 /HassBotDTO/obj
 /HassBotUtils/obj
 
+/DiscordbotLibCore/obj
+/HassBotAppCore/obj
+/HassBotDataCore/obj
+/HassBotDTOsCore/obj
+/HassBotUtilsCore/obj
+
 # bin folders
 /DiscordbotLib/bin
 /HassBotApp/bin
@@ -16,12 +22,25 @@
 /HassBotDTO/bin
 /HassBotUtils/bin
 
+/DiscordbotLibCore/bin
+/HassBotAppCore/bin
+/HassBotDataCore/bin
+/HassBotDTOsCore/bin
+/HassBotUtilsCore/bin
+
 # .config files
 /DiscordbotLib/*.config
 /HassBotApp/*.config
 /HassBotData/*.config
 /HassBotDTO/*.config
 /HassBotUtils/*.config
+/Output/*.config
+
+/DiscordbotLibCore/*.config
+/HassBotAppCore/*.config
+/HassBotDataCore/*.config
+/HassBotDTOsCore/*.config
+/HassBotUtilsCore/*.config
 /Output/*.config
 
 /packages
@@ -33,3 +52,8 @@ secret.txt
 !HassBotUtils/packages.config
 !HassBotApp/packages.config
 *.log
+!HassBotDataCore/packages.config
+!HassBotDTOsCore/packages.config
+!DiscordBotLibCore/packages.config
+!HassBotUtilsCore/packages.config
+!HassBotAppCore/packages.config
