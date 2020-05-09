@@ -25,7 +25,8 @@ namespace HassBotApp
                 string assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
                 XmlDocument log4netConfig = new XmlDocument();
-                log4netConfig.Load(File.OpenRead(assemblyPath + "\\log4net.config"));
+                string log4netCOnfigPath = Path.Combine(assemblyPath, "log4net.config");
+                log4netConfig.Load(File.OpenRead(log4netCOnfigPath));
                 var repo = log4net.LogManager.CreateRepository(Assembly.GetEntryAssembly(),
                            typeof(log4net.Repository.Hierarchy.Hierarchy));
                 log4net.Config.XmlConfigurator.Configure(repo, log4netConfig["log4net"]);
