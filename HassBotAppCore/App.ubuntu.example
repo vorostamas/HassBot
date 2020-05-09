@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <startup> 
+    <supportedRuntime version="v4.0" sku=".NETFramework,Version=v4.6.1" />
+  </startup>
+  <runtime>
+    <assemblyBinding xmlns="urn:schemas-microsoft-com:asm.v1">
+      <dependentAssembly>
+        <assemblyIdentity name="System.Interactive.Async" publicKeyToken="94bc3704cddfc263" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-3.0.3000.0" newVersion="3.0.3000.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="System.Net.Http" publicKeyToken="b03f5f7f11d50a3a" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-4.1.1.0" newVersion="4.1.1.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="System.Diagnostics.DiagnosticSource" publicKeyToken="cc7b13ffcd2ddd51" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-4.0.1.0" newVersion="4.0.1.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="Newtonsoft.Json" publicKeyToken="30ad4fe6b2a6aeed" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-11.0.0.0" newVersion="11.0.0.0" />
+      </dependentAssembly>
+    </assemblyBinding>
+  </runtime>
+
+  <appSettings>
+    <add key="token" value="SECRET TOKEN HERE!" />
+
+    <add key="WelcomeMsgUrl" value="https://raw.githubusercontent.com/awesome-automations/hassbot-data/master/welcome.txt" />
+    <add key="WelcomeMsgLocalPath" value="/home/suresh/HassBot/Output/welcome.txt" />
+    <add key="sitemapUrl" value="https://home-assistant.io/sitemap.xml" />
+    <add key="CommandsUrl" value="https://raw.githubusercontent.com/awesome-automations/hassbot-data/master/commands.json" />
+    <add key="CommandsLocalPath" value="/home/suresh/HassBot/Output/commands.json" />
+    <add key="BlockedDomainsUrl" value="https://raw.githubusercontent.com/awesome-automations/hassbot-data/master/blocked_domains.json" />
+    <add key="BlockedDomainsLocalPath" value="/home/suresh/HassBot/Output/blocked_domains.json" />
+
+    <add key="sitemapPath" value="/home/suresh/HassBot/Output/sitemap.xml" />
+    <add key="afkUsersFile" value="/home/suresh/HassBot/Output/away.json" />
+    <add key="subscriptionsFile" value="/home/suresh/HassBot/Output/subscriptions.json" />
+    <add key="violationsFile" value="/home/suresh/HassBot/Output/violations.json" />
+
+    <add key="maxLinesLimit" value="15" />
+    <add key="deleteHoundBotMsgs" value="true" />
+
+    <add key="discordServerName" value="Home Assistant" />
+    <add key="mods" value="skalavala, arsaboo, Tinkerer, Vasiley, dale3h, baloob, Tediore, infamy, quadflight, bachya, phnx, cogneato, iantrich, Ludeeus, hunterjm, Frenck, robbiet480, Robbie Trencheny" />
+
+    <add key="serverGuild" value="330944238910963714" />
+    <add key="modChannel" value="330948240805462026"/>
+    <add key="modlogChannel" value="473590680103419943"/>
+    <add key="botspamChannel" value="331106174722113548"/>
+    <add key="welcomerulesChannel" value="331130181102206976" />
+  </appSettings>
+</configuration>
