@@ -46,31 +46,46 @@ namespace DiscordBotLib
 
         public static Task LogMessage(LogMessage message)
         {
-            if (message.Exception is CommandException cmdEx)
+            if (message.Message != null)
             {
-                logger.Error($"{cmdEx.GetBaseException().GetType()} was thrown while executing {cmdEx.Command.Aliases.First()} in {cmdEx.Context.Channel} by {cmdEx.Context.User}.");
+                if (message.Message.Trim() == string.Empty)
+                    return Task.CompletedTask;
+            }
+            else
+            {
+                return Task.CompletedTask;
             }
 
             switch (message.Severity)
             {
                 case LogSeverity.Critical:
-                    logger.Fatal(message.Message);
+                    logger.Fatal($"[{message.Source ?? ""}] {message.Message ?? ""}.");
                     break;
                 case LogSeverity.Error:
-                    logger.Error(message.Message);
+                    logger.Error($"[{message.Source ?? ""}] {message.Message ?? ""}.");
+                    LogException(message);
                     break;
                 case LogSeverity.Warning:
-                    logger.Warn(message.Message);
+                    logger.Warn($"[{message.Source ?? ""}] {message.Message ?? ""}.");
                     break;
                 case LogSeverity.Info:
-                    logger.Info(message.Message);
+                    logger.Info($"[{message.Source ?? ""}] {message.Message ?? ""}.");
                     break;
                 case LogSeverity.Verbose:
                 case LogSeverity.Debug:
-                    logger.Debug(message.Message);
+                    logger.Debug($"[{message.Source ?? ""}] {message.Message ?? ""}.");
                     break;
             }
+
             return Task.CompletedTask;
+        }
+
+        private static void LogException(LogMessage message)
+        {
+            if (message.Exception is CommandException cmdEx)
+            {
+                logger.Error($"{cmdEx.GetBaseException().GetType()} was thrown while executing {cmdEx.Command.Aliases.First()} in {cmdEx.Context.Channel} by {cmdEx.Context.User}.");
+            }
         }
 
         public static async Task FilterBotMessages(SocketUserMessage message,

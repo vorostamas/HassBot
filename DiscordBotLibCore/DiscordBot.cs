@@ -7,7 +7,6 @@ using HassBotUtils;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Threading;
@@ -99,13 +98,12 @@ namespace DiscordBotLib
         private async Task Client_Disconnected(Exception arg)
         {
             siteMapRefreshTimer.Enabled = false;
-            // logger.Warn("The @HassBot was disconnected... will try to connect in 5 seconds.");
 
-            // wait for 2 seconds
-            await Task.Delay(2000);
+            logger.Warn("[HassBot] Reconnecting.");
 
-            // start all over again!
-            await StartInternal();
+            // Wait for a second as a grace period, and return! 
+            // A new call to StartBotAsync will restart the bot
+            await Task.Delay(1000);
         }
 
         private async Task HandleCommandAsync(SocketMessage arg)

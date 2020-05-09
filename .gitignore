@@ -57,3 +57,5 @@ secret.txt
 !DiscordBotLibCore/packages.config
 !HassBotUtilsCore/packages.config
 !HassBotAppCore/packages.config
+/HassBotAppCore/Properties/PublishProfiles
+/HassBotAppCore/HassBotAppCore.csproj.user
